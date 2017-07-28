@@ -10,6 +10,7 @@ import routesApp from '../common/routes';
 import fetch from 'isomorphic-fetch'
 import fs from 'fs';
 import path from 'path';
+import 'antd/dist/antd.less';
 
 
 function renderFullPage(html,initState){

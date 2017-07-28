@@ -1,9 +1,9 @@
 export default {
     dbaddr:'localhost',
     dbport: 27017,
-    db: 'mycnode',
-    dbuser: 'laoqiren',
-    dbpwd: 'luoxia.me',
+    db: 'admin',
+    dbuser: '',
+    dbpwd: '',
     serverip: 'localhost',
     serverport: 3000
 }

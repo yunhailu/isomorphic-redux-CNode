@@ -38,6 +38,10 @@ module.exports = {
                 loaders: ['style-loader','css-loader','sass-loader']
             },
             {
+                test:/\.less$/,
+                loaders: ['style-loader','css-loader','less-loader']
+            },
+            {
                 test: webpack_isomorphic_tools_plugin.regular_expression('images'),
                 loader: 'url-loader?limit=10240', // any image below or equal to 10K will be converted to inline base64 instead
             }

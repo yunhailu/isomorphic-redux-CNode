@@ -5,6 +5,7 @@ import {Router,Route,browserHistory} from 'react-router';
 import counterApp from '../common/reducers';
 import storeApp from '../common/configStore';
 import routesApp from '../common/routes';
+import 'antd/dist/antd.less';
 const initState = window.__INITIAL_STATE__;
 
 const store = storeApp(initState);
