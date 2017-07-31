@@ -4,7 +4,7 @@
   "description": "react-ssr",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "better-npm-run start",
+    "start": "npm run build && better-npm-run start",
     "run-dev-server": "better-npm-run start-webpack-dev-server",
     "run-server": "better-npm-run start-node-dev-server",
     "build": "better-npm-run build"

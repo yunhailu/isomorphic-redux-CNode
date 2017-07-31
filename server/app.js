@@ -12,7 +12,7 @@ import handleRender from './render';
 const app = new express();
 const port = 3000;
 
-app.set('jwtTokenSecret',"LuoXia");
+app.set('jwtTokenSecret',"lishoulong");
 
 if(process.env.NODE_ENV === 'development'){
     app.use(logger('dev'));

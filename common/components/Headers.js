@@ -2,7 +2,9 @@ import React from 'react';
 import { Router, Route, Link ,browserHistory} from 'react-router'
 import {Button,Menu, Icon,Input, Layout} from 'antd'
 const Search = Input.Search;
-export default class Header extends React.Component {
+const { Header } = Layout;
+
+export default class Headers extends React.Component {
     constructor(props){
         super(props)
         this.state = {
@@ -22,7 +24,7 @@ export default class Header extends React.Component {
     render(){
         const {user,logOut} = this.props;
         return (
-            <div>
+            <Header>
                 <Menu selectedKeys={[this.state.current]} theme="dark" onClick={this.handleNavigator} mode="horizontal" style={{padding:'0 30px'}}>
                     <Menu.Item key="logo"  style={{width:'12%'}}>
                         <Link to="/"><img src="https://o4j806krb.qnssl.com/public/images/cnodejs_light.svg"/></Link>
@@ -62,7 +64,7 @@ export default class Header extends React.Component {
                         )
                     }
                 </Menu>
-            </div>
+            </Header>
         )
     }
 }

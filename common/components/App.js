@@ -1,12 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { Router, Route, Link,browserHistory } from 'react-router'
-import {fetchUser,selectAuthor} from '../actions/actions'
+import {fetchUser,selectAuthor, logOut} from '../actions/actions'
 import List from './List'
-import MyHeader from './Header'
+import MyHeader from './Headers'
 import Side from './Side'
 import fetch from 'isomorphic-fetch'
-import {logOut} from '../actions/actions'
 import {Button,Menu, Icon,Input, Layout} from 'antd'
 const { Header, Footer, Sider, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -35,9 +34,21 @@ class App extends React.Component {
                 <Layout>
                     <MyHeader logOut={this.handleLogout} user={user}/>
                     {/*<img src={require('../../assets/images/test.jpg')} width='200'/>*/}
-                    <Content style={{backgroundColor: '#EDEDED', padding:"15px 5%"}}>
-                        {this.props.children}
-                    </Content>
+                    <Layout>
+                        <Sider width="100" style={{backgroundColor:"#EDEDED",marginTop:'20px'}}>
+                            <Menu
+                                mode="vertical"
+                                defaultSelectedKeys={['1']}
+                                style={{ borderRight: 0 }}
+                            >
+                            <Menu.Item key="1">资源管理</Menu.Item>
+                            <Menu.Item key="2">审核上线</Menu.Item>
+                            </Menu>
+                        </Sider>
+                        <Content style={{backgroundColor: '#EDEDED', padding:"15px 5%"}}>
+                            {this.props.children}
+                        </Content>
+                    </Layout>
                     <Footer style={{ textAlign: 'center' }}>
                         created by Xia Luo,haha
                     </Footer>

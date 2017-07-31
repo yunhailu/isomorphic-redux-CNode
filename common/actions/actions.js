@@ -18,6 +18,7 @@ function recieveUser(user){
 export function fetchUser(){
     const token = localStorage.getItem('token');
     if(!token){
+        console.log('!token');
         return (dispatch)=>{
             return dispatch(recieveUser({}))
         }

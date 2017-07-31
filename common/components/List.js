@@ -2,11 +2,12 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Picker from './Picker'
 import Posts from './Posts'
+import TablePosts from './TablePosts'
 import Side from './Side'
 import {selectAuthor,fetchPostsIfNeeded,invalidatePosts,fetchItem} from '../actions/actions'
-import { Spin ,Button,Menu, Icon,Input, Layout} from 'antd';
+import { Form, Row, Col, Spin ,Button,Menu, Icon,Input, Layout} from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
-import { Row, Col } from 'antd';
+const FormItem = Form.Item;
 
 class List extends React.Component {
     constructor(props){
@@ -40,45 +41,50 @@ class List extends React.Component {
         const {dispatch} = this.props;
         dispatch(fetchItem(id));
     }
+    handleSearch(){
+        console.log('submit');
+    }
     render(){
         const { item,selectedAuthor, params,posts, isFetching, lastUpdated,user} = this.props;
         let realPosts = params.author===undefined?posts:posts.filter((post)=>post.author===params.author);
         let postsHaveNoComment = realPosts.filter((post)=>post.discussion.length === 0);
+        const formItemLayout = {
+            labelCol: { span: 10 },
+            wrapperCol: { span: 14 },
+        };
         return (
             <div>
                 <Layout>
                     <Content style={{marginRight:'20px'}}>
                         <div>
-                            <p>
-                            {lastUpdated &&
-                                <span>
-                                Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-                                {' '}
-                                </span>
-                            }
-                            {!isFetching &&
-                                <a href='#'
-                                onClick={this.handleRefreshClick}>
-                                刷新
-                                </a>
-                            }
-                            </p>
-                            {isFetching &&
-                            <Spin/>
-                            }
-                            {!isFetching && realPosts.length === 0 &&
-                            <h2>Empty.</h2>
-                            }
+                            <Form
+                                className="ant-advanced-search-form"
+                                onSubmit={this.handleSearch}
+                            >
+                                <Row>
+                                    <Col span={8}>
+                                        <FormItem {...formItemLayout} label="资源ID">
+                                            <Input placeholder="placeholder" />
+                                        </FormItem>
+                                    </Col>
+                                    <Col span={8}>
+                                        <FormItem {...formItemLayout} label="资源名称">
+                                            <Input placeholder="placeholder" />
+                                        </FormItem>
+                                    </Col>
+                                    <Col span={6}>
+                                        <Button type="primary" htmlType="submit">筛选</Button>
+                                    </Col>
+                                </Row>
+                            </Form>
                             {realPosts.length > 0 &&
                             <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-                                <Posts posts={realPosts} onShow={this.handleShow}/>
+                                {/* <Posts posts={realPosts} onShow={this.handleShow}/> */}
+                                <TablePosts posts={realPosts} onShow={this.handleShow} />
                             </div>
                             }
                         </div>
                     </Content>
-                    <Sider width="300" style={{backgroundColor:"#EDEDED",marginTop:'20px'}}>
-                        <Side user={user} postsHaveNoComment={postsHaveNoComment}/>
-                    </Sider>
                 </Layout>
             </div>
         )

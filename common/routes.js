@@ -7,6 +7,7 @@ import Publish from '../common/components/Publish';
 import Space from '../common/components/Space';
 import LogIn from '../common/components/LogIn';
 import Reg from '../common/components/Reg';
+import addProperty from '../common/components/addProperty';
 const routes = (
     <Route path="/" component={App}>
             <IndexRoute component={List}/>
@@ -16,6 +17,7 @@ const routes = (
             <Route path="/publish" component={Publish}/>
             <Route path="/logIn" component={LogIn}/>
             <Route path="/reg" component={Reg}/>
+            <Route path="/addProperty/:type" component={addProperty}/>
     </Route>
     );
 
