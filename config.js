@@ -1,7 +1,7 @@
 export default {
     dbaddr:'localhost',
     dbport: 27017,
-    db: 'admin',
+    db: 'isomorphic-redux-CNode',
     dbuser: '',
     dbpwd: '',
     serverip: 'localhost',

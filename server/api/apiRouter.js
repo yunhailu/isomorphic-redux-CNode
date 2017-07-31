@@ -9,7 +9,8 @@ import comment from './comment';
 import vote from './vote';
 import auth from '../middleware/auth';
 import sortUsers from './sortUsers';
-import getUserInfo from './getUserInfo'
+import getUserInfo from './getUserInfo';
+import getCustomers from './customers';
 const router = Express.Router();
 
 router.get('/post',getList);
@@ -32,5 +33,7 @@ router.post('/vote',vote);
 
 router.get('/sortUsers',sortUsers);
 
-router.post('/getUserInfo',getUserInfo)
+router.post('/getUserInfo',getUserInfo);
+
+router.post('/getCustomer', getCustomers);
 export default router;
