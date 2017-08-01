@@ -1,7 +1,7 @@
 export default {
     dbaddr:'localhost',
     dbport: 27017,
-    db: 'jackblog-dev',
+    db: 'fred-dev',
     dbuser: '',
     dbpwd: '',
     serverip: 'localhost',

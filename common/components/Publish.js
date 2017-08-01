@@ -93,6 +93,7 @@ class Publish extends React.Component {
             </Menu>
     }
     render(){
+        console.log('propertys',this.props.propertys);
         const types = (
             <Menu onClick={this.handleSelect} selectedKeys={[this.state.type]}>
                 <Menu.Item key="分享">分享</Menu.Item>
@@ -239,10 +240,11 @@ class Publish extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { selectedAuthor,user } = state
+  const { selectedAuthor,user,propertys } = state
   return {
     user,
-    selectedAuthor
+    selectedAuthor,
+    propertys
   }
 }
 export default connect(mapStateToProps)(Publish)

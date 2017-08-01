@@ -9,7 +9,10 @@ import comment from './comment';
 import vote from './vote';
 import auth from '../middleware/auth';
 import sortUsers from './sortUsers';
-import getUserInfo from './getUserInfo'
+import getUserInfo from './getUserInfo';
+import addProperty from './addProperty';
+import getPropertyList from './getPropertyList';
+
 const router = Express.Router();
 
 router.get('/post',getList);
@@ -32,5 +35,11 @@ router.post('/vote',vote);
 
 router.get('/sortUsers',sortUsers);
 
-router.post('/getUserInfo',getUserInfo)
+router.post('/getUserInfo',getUserInfo);
+
+// 增查属性接口
+router.post('/property',auth);
+router.post('/property', addProperty);
+router.get('/propertyList',getPropertyList);
+
 export default router;

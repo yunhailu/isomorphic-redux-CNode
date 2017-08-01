@@ -1,34 +1,63 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-fetch';
 import {browserHistory} from 'react-router';
-import {Tabs, Input, Button} from 'antd'
+import {Tabs, Input, Button} from 'antd';
+// import {addProperty} from '../util/api';
+import {fetchPropertyList} from '../actions/actions';
 const TabPane = Tabs.TabPane;
 
 class Publish extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            propertyvalue: ''
         }
     }
-    callback(){
-        console.log('callback');
+    addPropertyType(propertytype){
+        console.log('propertytype',propertytype)
+        const {dispatch} = this.props
+        const propertyvalue = this.state.propertyvalue,
+            access_token = localStorage.getItem('token')
+        const content = JSON.stringify({
+                propertytype,
+                propertyvalue,
+                access_token
+            })
+        fetch('/api/property',{
+            method: 'POST',
+            headers:{
+                "Content-Type": "application/json",
+                "Content-Length": content.length.toString()
+            },
+            body: content
+        }).then(res=>{
+            if(res.ok){
+                this.state.propertyvalue = '';
+                dispatch(fetchPropertyList());
+                browserHistory.push('/Publish')
+            } else {
+                this.setState({
+                    isFailed: true
+                })
+            }
+        })
     }
     makeInput(typeline){
         let typeValue = '';
-        if(typeline == '新增业务线'){
+        if(typeline == 'business'){
             typeValue = '例如：商品详情页'
-        }else if(typeline == '新增app最低版本'){
+        }else if(typeline == 'app'){
             typeValue = '例如：3.3'
-        }else if(typeline == '新增用途类型'){
+        }else if(typeline == 'utility'){
             typeValue = '例如：发布'
-        }else if(typeline == '新增base版本'){
+        }else if(typeline == 'base'){
             typeValue = '例如：0.44.3'
         }
         return (
             <div style={{ marginLeft: 16, marginTop: 20}}>
-                <Input addonBefore={typeline} defaultValue={typeValue} />
-                <Button type="primary" style={{marginLeft: 20}}>提交</Button>
+                <Input addonBefore={typeline} defaultValue={typeValue}  onChange={(e)=>this.setState({propertyvalue: e.target.value})}/>
+                <Button type="primary" style={{marginLeft: 20}} onClick={() => this.addPropertyType(typeline)}>提交</Button>
                 <Button>返回</Button>
             </div>
         )
@@ -43,10 +72,10 @@ class Publish extends React.Component {
                       tabPosition={'left'}
                       style={{ height: 220 }}
                 >
-                    <TabPane tab="新增业务线" key="business">{this.makeInput('新增业务线')}</TabPane>
-                    <TabPane tab="新增app最低版本" key="app">{this.makeInput('新增app最低版本')}</TabPane>
-                    <TabPane tab="新增用途类型" key="utility">{this.makeInput('新增用途类型')}</TabPane>
-                    <TabPane tab="新增base版本" key="base">{this.makeInput('新增base版本')}</TabPane>
+                    <TabPane tab="新增业务线" key="business">{this.makeInput('business')}</TabPane>
+                    <TabPane tab="新增app最低版本" key="app">{this.makeInput('app')}</TabPane>
+                    <TabPane tab="新增用途类型" key="utility">{this.makeInput('utility')}</TabPane>
+                    <TabPane tab="新增base版本" key="base">{this.makeInput('base')}</TabPane>
                 </Tabs>
             </div>
         )
