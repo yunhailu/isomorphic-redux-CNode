@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { Router, Route, Link ,browserHistory} from 'react-router'
-import { Tabs, Row, Col, Button,Menu, Icon,Input, Layout} from 'antd'
+import { Tabs, Table, Row, Col, Button,Menu, Icon,Input, Layout} from 'antd'
 import fetch from 'isomorphic-fetch'
 const Search = Input.Search;
 export default class User extends React.Component {
@@ -42,30 +42,29 @@ export default class User extends React.Component {
     render(){
         const {user,logOut} = this.props;
         const TabPane = Tabs.TabPane;
+        const columns = [{
+            title: 'ID',
+            dataIndex: 'id',
+            key: 'id',
+            render: text => <a href="#">{text}</a>,
+        }, {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+        }, {
+            title: 'E-mail',
+            dataIndex: 'email',
+            key: 'email',
+        }, {
+            title: 'Company',
+            dataIndex: 'company',
+            key: 'company',
+        }];
         return (
             <div>
                 <Tabs defaultActiveKey="1">
                     <TabPane tab={<span><Icon type="apple" />Tab 1</span>} key="1">
-                        <Row>
-                            <Col span={6}>ID</Col>
-                            <Col span={6}>Name</Col>
-                            <Col span={6}>E-mail</Col>
-                            <Col span={6}>Company</Col>
-                        </Row>
-                        {
-                            this.state.customers.map(customer => {
-                                return (
-                                    <div key="{customer.id}">
-                                        <Row>
-                                            <Col span={6}>{customer.id}</Col>
-                                            <Col span={6}>{customer.name}</Col>
-                                            <Col span={6}>{customer.email}</Col>
-                                            <Col span={6}>{customer.company}</Col>
-                                        </Row>
-                                    </div>
-                                );
-                            })
-                        }
+                        <Table columns={columns} dataSource={this.state.customers} />
                     </TabPane>
                     <TabPane tab={<span><Icon type="android" />Tab 2</span>} key="2">
                         Tab 2
