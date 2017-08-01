@@ -10,7 +10,6 @@ export const LOG_OUT = 'LOG_OUT'
 export const REQUEST_PROPERTY = 'REQUEST_PROPERTY'
 export const RECEIVE_PROPERTY = 'RECEIVE_PROPERTY'
 import config from '../../config'
-import {fetchProperty} from '../util/api';
 
 function recieveUser(user){
     return {
@@ -65,15 +64,11 @@ export function fetchPropertyList(){
         dispatch(requestPropertyList())
         return fetch('/api/propertyList',{
             method: 'GET'
-        }).then(res => {
-            if(res.ok){
-                return res.json();
-            } else {
-                console.log('获取属性失败')
+        }).then(response=>response.json()).then(json=>{
+            if (json.ok){
+                console.log('res.json',json.json);
+                dispatch(receiveProperty(json.json))
             }
-        }).then(json=>{
-            console.log('res.json',json)
-            dispatch(receiveProperty(json))
         })
     }
 }

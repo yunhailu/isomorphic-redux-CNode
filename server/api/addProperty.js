@@ -1,29 +1,31 @@
 const jwt = require("jwt-simple");
-import mongoose from 'mongoose';
-const PropertyEntity = mongoose.model('property');
+import Property from '../Models/property';
+const PropertyEntity = new Property();
 export default function(req,res,next){
-    const property = {
+    const propertys = {
         propertyvalue: req.body.propertyvalue,
         propertytype: req.body.propertytype
     }
-    PropertyEntity.findOne({
-        businessValue: [],
-        appValue: [],
-        utilityValue: [property.propertyvalue],
-        baseValue: []
-    }).then(function(doc){
-        if(doc){
-            console.log('doc',doc)
-            this.save(cb)
-        }else{
-            console.log('doc is false');
+    Property.count({
+        type: propertys.propertytype,
+        value: propertys.propertyvalue,
+        isDel: false
+    }).exec()
+    .then(function(count){
+        if(count){
+            console.log('existed');
+            return res.json({ok: false, message: "数据已经存在"});
         }
+        return Property.create({
+            type: propertys.propertytype,
+            value: propertys.propertyvalue
+        })
     })
-    // PropertyEntity.saveProperty(property,err=>{
-    //     if(err){
-    //         return res.status(500).end('服务器错误')
-    //     } else {
-    //         return res.status(200).end('发布属性成功') 
-    //     }
-    // })
+    .then(doc => {
+        console.log(doc);
+        return res.json({ok: true, message: "success"});
+    })
+    .catch(err => {
+        return res.status(500).end(err);
+    })
 }

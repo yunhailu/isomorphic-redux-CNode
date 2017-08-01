@@ -37,6 +37,7 @@ class Publish extends React.Component {
                 dispatch(fetchPropertyList());
                 browserHistory.push('/Publish')
             } else {
+                console.log(res.message);
                 this.setState({
                     isFailed: true
                 })
