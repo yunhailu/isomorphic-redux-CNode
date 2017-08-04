@@ -5,5 +5,6 @@ export default {
     dbuser: '',
     dbpwd: '',
     serverip: 'localhost',
-    serverport: 3000
+    serverport: 3000,
+    cookieDomain: '.58.com'
 }

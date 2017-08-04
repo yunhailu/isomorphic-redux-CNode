@@ -25,23 +25,19 @@ export default class Headers extends React.Component {
         const {user,logOut} = this.props;
         return (
             <Header>
-                <Menu selectedKeys={[this.state.current]} theme="dark" onClick={this.handleNavigator} mode="horizontal" style={{padding:'0 30px'}}>
-                    <Menu.Item key="logo"  style={{width:'12%'}}>
+                <Menu selectedKeys={[this.state.current]} theme="dark" onClick={this.handleNavigator} mode="horizontal">
+                    <Menu.Item key="logo">
                         <Link to="/"><img src="https://o4j806krb.qnssl.com/public/images/cnodejs_light.svg"/></Link>
                     </Menu.Item>
                     <Menu.Item key="search">
                         <Search
                             ref='search'
                             placeholder="搜索指定用户的文章"
-                            style={{ width: 200 }}
                             onSearch={value => this.handleSearch(value)}
                         />
                     </Menu.Item>
                     <Menu.Item key="list">
                         <Link to="/">首页</Link>
-                    </Menu.Item>
-                    <Menu.Item key="space" key="space">
-                        <Link to="/space">个人中心</Link>
                     </Menu.Item>
                     {
                         user.name && (
@@ -54,7 +50,18 @@ export default class Headers extends React.Component {
                         user.name && <Menu.Item>用户:{user.name}</Menu.Item>
                     }
                     {
-                        !user.name && <Menu.Item><Link to="/Space">登录/注册</Link></Menu.Item>
+                        !user.name && (
+                            <Menu.Item>
+                                <Link to="/logIn">登录</Link>
+                            </Menu.Item>
+                        )
+                    }
+                    {
+                        !user.name && (
+                            <Menu.Item>
+                                <Link to="/reg">注册</Link>
+                            </Menu.Item>
+                        )
                     }
                     {
                         user.name && (

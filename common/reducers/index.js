@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
 import {
     SELECT_AUTHOR, INVALIDATE_POSTS,
-  REQUEST_POSTS, RECEIVE_POSTS,FETCH_ITEM,LOG_IN,LOG_OUT,RECEIVE_USER,REQUEST_PROPERTY,RECEIVE_PROPERTY
+  REQUEST_POSTS, RECEIVE_POSTS,FETCH_ITEM,LOG_IN,LOG_OUT,RECEIVE_USER,REQUEST_PROPERTY,RECEIVE_PROPERTY,RECEIVE_BUNDLES,REQUEST_BUNDLES
 } from '../actions/actions';
 
 function selectedAuthor(state="all",action){
@@ -95,13 +95,35 @@ function postsByAuthor(state={},action){
     }
 }
 
+function bundles(state={
+    isRequesting: false,
+    bundlelists: []
+},action){
+    switch(action.type){
+        case REQUEST_BUNDLES:
+            return Object.assign({}, state, {
+                isRequesting: true
+            })
+        case RECEIVE_BUNDLES:
+            return Object.assign({}, state, {
+                isRequesting: false,
+                bundlelists: action.bundles,
+                lastUpdated: action.receivedAt
+            })
+        default:
+            return state; 
+
+    }
+}
+
 
 const rootReducer = combineReducers({
     postsByAuthor,
     selectedAuthor,
     item,
     user,
-    propertys
+    propertys,
+    bundles
 })
 
 export default rootReducer;

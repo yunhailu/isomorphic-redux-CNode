@@ -9,7 +9,11 @@ export const LOG_IN = 'LOG_IN'
 export const LOG_OUT = 'LOG_OUT'
 export const REQUEST_PROPERTY = 'REQUEST_PROPERTY'
 export const RECEIVE_PROPERTY = 'RECEIVE_PROPERTY'
+export const REQUEST_BUNDLES = 'REQUEST_BUNDLES'
+export const RECEIVE_BUNDLES = 'RECEIVE_BUNDLES'
 import config from '../../config'
+import {propertyList, getBundles, user} from '../util/api'
+import { getCookie } from '../util/authService'
 
 function recieveUser(user){
     return {
@@ -18,7 +22,7 @@ function recieveUser(user){
     }
 }
 export function fetchUser(){
-    const token = localStorage.getItem('token');
+    const token = getCookie('token');
     if(!token){
         console.log('!token');
         return (dispatch)=>{
@@ -29,7 +33,7 @@ export function fetchUser(){
         const content = JSON.stringify({
                 access_token: token
             })
-        return fetch(`http://${config.serverip}:${config.serverport}/api/user`,{
+        return fetch(user,{
             method: 'POST',
             headers:{
                 "Content-Type": "application/json",
@@ -62,17 +66,16 @@ function receiveProperty(json){
 export function fetchPropertyList(){
     return dispatch=>{
         dispatch(requestPropertyList())
-        return fetch('/api/propertyList',{
+        return fetch(propertyList,{
             method: 'GET'
         }).then(response=>response.json()).then(json=>{
             if (json.ok){
-                console.log('res.json',json.json);
                 dispatch(receiveProperty(json.json))
             }
         })
     }
 }
-export function logIn(user){
+export function logIns(user){
     return {
         type: LOG_IN,
         user
@@ -125,32 +128,28 @@ function shouldFetchPosts(state,author){
         }
     }
 }
-function requestPosts(author){
+
+function requestBundles(){
     return {
-        type: REQUEST_POSTS,
-        author
+        type: REQUEST_BUNDLES
     }
 }
-function receivePosts(author,json){
+function receiveBundles(json){
     return {
-        type: RECEIVE_POSTS,
-        author,
-        posts: json,
+        type: RECEIVE_BUNDLES,
+        bundles: json,
         receivedAt: Date.now()
     }
 }
-function fetchPosts(author){
+export function fetchBundles(){
     return dispatch=>{
-        dispatch(requestPosts(author))
-        return fetch(`http://${config.serverip}:${config.serverport}/api/post?author=${author}`)
+        dispatch(requestBundles())
+        return fetch(getBundles)
             .then(response=>response.json())
-            .then(json=>dispatch(receivePosts(author,json)))
-    }
-}
-export function fetchPostsIfNeeded(author){
-    return (dispatch,getState) => {
-        if(shouldFetchPosts(getState(),author)){
-            return dispatch(fetchPosts(author))
-        }
+            .then(json=>{
+                if (json.ok){
+                    dispatch(receiveBundles(json.json))
+                }
+            })
     }
 }

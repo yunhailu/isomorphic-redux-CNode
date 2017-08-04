@@ -4,13 +4,13 @@ import {Provider} from 'react-redux';
 import reducerApp from '../common/reducers/index';
 import React from 'react';
 import {RouterContext,match} from 'react-router';
-import {selectAuthor,fetchPostsIfNeeded} from '../common/actions/actions'
+import {fetchBundles, fetchPropertyList} from '../common/actions/actions';
 import storeApp from '../common/configStore';
 import routesApp from '../common/routes';
 import fetch from 'isomorphic-fetch'
 import fs from 'fs';
 import path from 'path';
-
+import reactCookie from 'react-cookie';
 
 function renderFullPage(html,initState){
     const main = JSON.parse(fs.readFileSync(path.join(__dirname,'../webpack/webpack-assets.json'))).javascript.main;
@@ -38,16 +38,19 @@ function renderFullPage(html,initState){
 }
 
 export default function handleRender(req,res){
+    reactCookie.plugToRequest(req, res);
     match({routes:routesApp,location:req.url},(err,redirectLocation,renderProps)=>{
         if(err){
             res.status(500).end(`server error: ${err}`)
         } else if(redirectLocation){
-            res.redirect(redirectLocation.pathname+redirectLocation.search)
+            console.log('redirectLocation',redirectLocation);
+            res.redirect(302,redirectLocation.pathname+redirectLocation.search)
         } else if(renderProps){
+            console.log('renderProps');
             const store = storeApp({});
             Promise.all([
-                store.dispatch(selectAuthor('all')),
-                store.dispatch(fetchPostsIfNeeded('all'))
+                store.dispatch(fetchBundles()),
+                store.dispatch(fetchPropertyList())
             ])
             .then(()=>{
                 const html = renderToString(

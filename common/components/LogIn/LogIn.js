@@ -2,8 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import fetch from 'isomorphic-fetch'
-import {logIn,fetchUser} from '../actions/actions'
+import {logIns} from '../../actions/actions'
 import { Input, Button,Icon } from 'antd';
+import { saveCookie } from '../../util/authService';
+require('./LogIn.less');
 
 class LogIn extends React.Component{
     constructor(props){
@@ -36,9 +38,9 @@ class LogIn extends React.Component{
             }
         }).then(token=>{
                 if(token){
-                    dispatch(logIn({name}))
-                    localStorage.setItem('token',token)
-                    dispatch(fetchUser())
+                    dispatch(logIns({name}))
+                    saveCookie('token',token)
+                    console.log('saveCookie', saveCookie);
                     browserHistory.push('/')
                 } else {
                     console.log('登录失败!')
@@ -51,7 +53,7 @@ class LogIn extends React.Component{
             this.setState({ name: '' });
         }} /> : null;
         return (
-            <div>
+            <div className="login">
                 <h3>登录</h3>
                     <Input
                         placeholder="Enter your userName"
@@ -61,6 +63,7 @@ class LogIn extends React.Component{
                         onChange={(e)=>{
                             this.setState({name:e.target.value})
                         }}
+                        className="login-input-first"
                     />
                     <Input
                         type="password"
@@ -70,6 +73,7 @@ class LogIn extends React.Component{
                         onChange={(e)=>{
                             this.setState({passwd:e.target.value})
                         }}
+                        className="login-input-second"
                     />
                     <Button type="primary" onClick={this.handleClick}>登录</Button>
             </div>

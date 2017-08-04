@@ -7,7 +7,6 @@ export default function(req,res,next){
             return res.status(500).end(err);
         }
         let propsMap = {};
-        console.log('propsListssss', propsList);
         propsList.forEach(function(propsItem,key){
             let propsItemDoc = propsItem._doc;
             

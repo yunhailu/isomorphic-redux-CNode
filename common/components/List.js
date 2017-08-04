@@ -1,9 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Picker from './Picker'
-import Posts from './Posts'
-import TablePosts from './TablePosts'
-import Side from './Side'
+import TableBundles from './TableBundles'
 import {selectAuthor,fetchPostsIfNeeded,invalidatePosts,fetchItem} from '../actions/actions'
 import { Form, Row, Col, Spin ,Button,Menu, Icon,Input, Layout} from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
@@ -12,31 +10,19 @@ const FormItem = Form.Item;
 class List extends React.Component {
     constructor(props){
         super(props);
-        this.handleChange = this.handleChange.bind(this)
-        this.handleRefreshClick = this.handleRefreshClick.bind(this)
         this.handleShow = this.handleShow.bind(this)
     }
     componentDidMount(){
-        const {dispatch,selectedAuthor} = this.props;
+        const {dispatch} = this.props;
         //dispatch(fetchPostsIfNeeded(selectedAuthor))
     }
-    componentWillReceiveProps(nextProps){
-        if(nextProps.selectedAuthor !== this.props.selectedAuthor){
-            console.log('我要加载新的subreddit了')
-            const {dispatch,selectedAuthor} = nextProps;
-            dispatch(fetchPostsIfNeeded(selectedAuthor))
-        }
-    }
-    handleChange(nextAuthor){
-        this.props.dispatch(selectAuthor(nextAuthor));
-    }
-    handleRefreshClick(e) {
-        e.preventDefault()
-
-        const { dispatch, selectedAuthor } = this.props
-        dispatch(invalidatePosts(selectedAuthor))
-        dispatch(fetchPostsIfNeeded(selectedAuthor))
-    }
+    // componentWillReceiveProps(nextProps){
+    //     if(nextProps.selectedAuthor !== this.props.selectedAuthor){
+    //         console.log('我要加载新的subreddit了')
+    //         const {dispatch,selectedAuthor} = nextProps;
+    //         dispatch(fetchPostsIfNeeded(selectedAuthor))
+    //     }
+    // }
     handleShow(id){
         const {dispatch} = this.props;
         dispatch(fetchItem(id));
@@ -45,9 +31,7 @@ class List extends React.Component {
         console.log('submit');
     }
     render(){
-        const { item,selectedAuthor, params,posts, isFetching, lastUpdated,user} = this.props;
-        let realPosts = params.author===undefined?posts:posts.filter((post)=>post.author===params.author);
-        let postsHaveNoComment = realPosts.filter((post)=>post.discussion.length === 0);
+        const {bundlelists, isRequesting, lastUpdated} = this.props;
         const formItemLayout = {
             labelCol: { span: 10 },
             wrapperCol: { span: 14 },
@@ -55,7 +39,7 @@ class List extends React.Component {
         return (
             <div>
                 <Layout>
-                    <Content style={{marginRight:'20px'}}>
+                    <Content>
                         <div>
                             <Form
                                 className="ant-advanced-search-form"
@@ -77,12 +61,11 @@ class List extends React.Component {
                                     </Col>
                                 </Row>
                             </Form>
-                            {realPosts.length > 0 &&
-                            <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-                                {/* <Posts posts={realPosts} onShow={this.handleShow}/> */}
-                                <TablePosts posts={realPosts} onShow={this.handleShow} />
-                            </div>
-                            }
+                              {bundlelists.length > 0 &&
+                            <div>
+                                <TableBundles bundles={bundlelists} onShow={this.handleShow} />
+                            </div> 
+                            } 
                         </div>
                     </Content>
                 </Layout>
@@ -92,22 +75,19 @@ class List extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { selectedAuthor, postsByAuthor, item, user } = state
+  const { bundles } = state
   const {
-    isFetching,
+    isRequesting,
     lastUpdated,
-    items: posts
-  } = postsByAuthor[selectedAuthor] || {
-    isFetching: true,
-    items: []
+    bundlelists
+  } = bundles || {
+    isRequesting: true,
+    bundlelists: []
   }
   return {
-    selectedAuthor,
-    posts: posts||[],
-    isFetching,
-    lastUpdated,
-    item,
-    user
+    bundlelists,
+    isRequesting,
+    lastUpdated
   }
 }
 export default connect(mapStateToProps)(List)

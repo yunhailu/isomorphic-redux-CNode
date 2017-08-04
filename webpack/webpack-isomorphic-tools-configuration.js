@@ -11,7 +11,7 @@ module.exports =
       extensions: ['png', 'jpg', 'gif', 'ico', 'svg']
     },
     style_modules: {
-      extensions: ['scss','css'],
+      extensions: ['less','css'],
       filter: function(module, regex, options, log) {
         if (options.development) {
           // in development mode there's webpack "style-loader",

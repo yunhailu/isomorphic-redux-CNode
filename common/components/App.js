@@ -1,17 +1,18 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { Router, Route, Link,browserHistory } from 'react-router'
-import {fetchUser,selectAuthor, logOut} from '../actions/actions'
+import {fetchUser, logOut} from '../actions/actions'
 import List from './List'
 import MyHeader from './Headers'
-import Side from './Side'
 import fetch from 'isomorphic-fetch'
 import {Button,Menu, Icon,Input, Layout} from 'antd'
+import { signOut } from '../util/authService'
+
 const { Header, Footer, Sider, Content } = Layout;
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
-require('../../assets/styles/app.scss')
+require('../../assets/styles/app.less')
 class App extends React.Component {
     constructor(props){
        super(props);
@@ -19,7 +20,8 @@ class App extends React.Component {
     }
     handleLogout(){
         const {dispatch} = this.props;
-        localStorage.removeItem('token');
+        signOut();
+        console.log('signOut',signOut);
         dispatch(logOut());
         browserHistory.push('/');
     }
@@ -28,30 +30,26 @@ class App extends React.Component {
         dispatch(fetchUser())
     }
     render() {
-        const {user,posts} = this.props;
+        const {user} = this.props;
         return (
             <div id="hey">
                 <Layout>
                     <MyHeader logOut={this.handleLogout} user={user}/>
                     {/*<img src={require('../../assets/images/test.jpg')} width='200'/>*/}
                     <Layout>
-                        <Sider width="100" style={{backgroundColor:"#EDEDED",marginTop:'20px'}}>
+                        <Sider width="100">
                             <Menu
                                 mode="vertical"
                                 defaultSelectedKeys={['1']}
-                                style={{ borderRight: 0 }}
                             >
                             <Menu.Item key="1">资源管理</Menu.Item>
                             <Menu.Item key="2">审核上线</Menu.Item>
                             </Menu>
                         </Sider>
-                        <Content style={{backgroundColor: '#EDEDED', padding:"15px 5%"}}>
+                        <Content>
                             {this.props.children}
                         </Content>
                     </Layout>
-                    <Footer style={{ textAlign: 'center' }}>
-                        created by Xia Luo,haha
-                    </Footer>
                 </Layout>
             </div>
         )
@@ -59,15 +57,9 @@ class App extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { user,postsByAuthor,selectedAuthor } = state
-  const {
-    items: posts
-  } = postsByAuthor[selectedAuthor] || {
-    items: []
-  }
+  const { user} = state
   return {
-    user,
-    posts: posts||[]
+    user
   }
 }
 export default connect(mapStateToProps)(App)

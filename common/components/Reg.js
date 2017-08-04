@@ -2,8 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import fetch from 'isomorphic-fetch'
 import {browserHistory} from 'react-router';
-import {logIn} from '../actions/actions'
+import {logIns} from '../actions/actions'
 import { Input, Button,Icon } from 'antd';
+import { saveCookie } from '../util/authService';
+
 class Reg extends React.Component{
     constructor(props){
         super(props);
@@ -35,8 +37,8 @@ class Reg extends React.Component{
             }
         }).then(json=>{
             if(json){
-                localStorage.setItem('token',json)
-                dispatch(logIn({
+                saveCookie('token',token)
+                dispatch(logIns({
                     name,
                     score: 0
                 }))

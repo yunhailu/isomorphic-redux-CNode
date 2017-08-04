@@ -3,11 +3,11 @@ import {connect} from 'react-redux';
 import fetch from 'isomorphic-fetch';
 import {browserHistory} from 'react-router';
 import {Tabs, Input, Button} from 'antd';
-// import {addProperty} from '../util/api';
+import { getCookie } from '../util/authService'
 import {fetchPropertyList} from '../actions/actions';
 const TabPane = Tabs.TabPane;
 
-class Publish extends React.Component {
+class AddProperty extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -15,14 +15,11 @@ class Publish extends React.Component {
         }
     }
     addPropertyType(propertytype){
-        console.log('propertytype',propertytype)
         const {dispatch} = this.props
-        const propertyvalue = this.state.propertyvalue,
-            access_token = localStorage.getItem('token')
+        const propertyvalue = this.state.propertyvalue;
         const content = JSON.stringify({
                 propertytype,
-                propertyvalue,
-                access_token
+                propertyvalue
             })
         fetch('/api/property',{
             method: 'POST',
@@ -90,4 +87,4 @@ function mapStateToProps(state) {
     selectedAuthor
   }
 }
-export default connect(mapStateToProps)(Publish)
+export default connect(mapStateToProps)(AddProperty)

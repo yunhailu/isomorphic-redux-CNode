@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/public/main.5fd504f87ef47f8e60f8.js"
+    "main": "http://localhost:3001/public/main.eeedce1a646894901497.js"
   },
   "styles": {},
   "assets": {
@@ -52,8 +52,14 @@
     "./~/antd/lib/tooltip/style/index.css": {
       "_style": ".ant-tooltip {\n  position: absolute;\n  z-index: 1060;\n  display: block;\n  visibility: visible;\n  font-size: 12px;\n  line-height: 1.5;\n}\n.ant-tooltip-hidden {\n  display: none;\n}\n.ant-tooltip-placement-top,\n.ant-tooltip-placement-topLeft,\n.ant-tooltip-placement-topRight {\n  padding-bottom: 8px;\n}\n.ant-tooltip-placement-right,\n.ant-tooltip-placement-rightTop,\n.ant-tooltip-placement-rightBottom {\n  padding-left: 8px;\n}\n.ant-tooltip-placement-bottom,\n.ant-tooltip-placement-bottomLeft,\n.ant-tooltip-placement-bottomRight {\n  padding-top: 8px;\n}\n.ant-tooltip-placement-left,\n.ant-tooltip-placement-leftTop,\n.ant-tooltip-placement-leftBottom {\n  padding-right: 8px;\n}\n.ant-tooltip-inner {\n  max-width: 250px;\n  padding: 8px 10px;\n  color: #fff;\n  text-align: left;\n  text-decoration: none;\n  background-color: rgba(64, 64, 64, 0.85);\n  border-radius: 4px;\n  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);\n  min-height: 34px;\n}\n.ant-tooltip-arrow {\n  position: absolute;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.ant-tooltip-placement-top .ant-tooltip-arrow,\n.ant-tooltip-placement-topLeft .ant-tooltip-arrow,\n.ant-tooltip-placement-topRight .ant-tooltip-arrow {\n  bottom: 3px;\n  border-width: 5px 5px 0;\n  border-top-color: rgba(64, 64, 64, 0.85);\n}\n.ant-tooltip-placement-top .ant-tooltip-arrow {\n  left: 50%;\n  margin-left: -5px;\n}\n.ant-tooltip-placement-topLeft .ant-tooltip-arrow {\n  left: 16px;\n}\n.ant-tooltip-placement-topRight .ant-tooltip-arrow {\n  right: 16px;\n}\n.ant-tooltip-placement-right .ant-tooltip-arrow,\n.ant-tooltip-placement-rightTop .ant-tooltip-arrow,\n.ant-tooltip-placement-rightBottom .ant-tooltip-arrow {\n  left: 3px;\n  border-width: 5px 5px 5px 0;\n  border-right-color: rgba(64, 64, 64, 0.85);\n}\n.ant-tooltip-placement-right .ant-tooltip-arrow {\n  top: 50%;\n  margin-top: -5px;\n}\n.ant-tooltip-placement-rightTop .ant-tooltip-arrow {\n  top: 8px;\n}\n.ant-tooltip-placement-rightBottom .ant-tooltip-arrow {\n  bottom: 8px;\n}\n.ant-tooltip-placement-left .ant-tooltip-arrow,\n.ant-tooltip-placement-leftTop .ant-tooltip-arrow,\n.ant-tooltip-placement-leftBottom .ant-tooltip-arrow {\n  right: 3px;\n  border-width: 5px 0 5px 5px;\n  border-left-color: rgba(64, 64, 64, 0.85);\n}\n.ant-tooltip-placement-left .ant-tooltip-arrow {\n  top: 50%;\n  margin-top: -5px;\n}\n.ant-tooltip-placement-leftTop .ant-tooltip-arrow {\n  top: 8px;\n}\n.ant-tooltip-placement-leftBottom .ant-tooltip-arrow {\n  bottom: 8px;\n}\n.ant-tooltip-placement-bottom .ant-tooltip-arrow,\n.ant-tooltip-placement-bottomLeft .ant-tooltip-arrow,\n.ant-tooltip-placement-bottomRight .ant-tooltip-arrow {\n  top: 3px;\n  border-width: 0 5px 5px;\n  border-bottom-color: rgba(64, 64, 64, 0.85);\n}\n.ant-tooltip-placement-bottom .ant-tooltip-arrow {\n  left: 50%;\n  margin-left: -5px;\n}\n.ant-tooltip-placement-bottomLeft .ant-tooltip-arrow {\n  left: 16px;\n}\n.ant-tooltip-placement-bottomRight .ant-tooltip-arrow {\n  right: 16px;\n}\n"
     },
-    "./assets/styles/app.scss": {
-      "_style": "html, body {\n  height: 100%;\n  width: 100%;\n  font-size: 14px; }\n\n.ant-row:hover {\n  background-color: #EDEDED; }\n\n.link:link {\n  color: black; }\n\n.link:visited {\n  color: grey; }\n\n.link:hover {\n  color: blue;\n  text-decoration: underline; }\n\n.link:active {\n  color: red; }\n\n@media screen and (max-width: 500px) {\n  .ant-layout-sider {\n    display: none; } }\n"
+    "./assets/styles/app.less": {
+      "_style": "body {\n  min-height: 100%;\n  font-size: 16px;\n}\nul,\nli {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"
+    },
+    "./common/components/LogIn/LogIn.less": {
+      "_style": ".login {\n  text-align: center;\n}\n.login-input-first {\n  display: block;\n  width: 50%;\n  left: 26%;\n}\n.login-input-second {\n  display: block;\n  width: 50%;\n  left: 26%;\n}\n"
+    },
+    "./common/components/Publish/Publish.less": {
+      "_style": ".btnDrop {\n  width: 40px;\n}\n"
     }
   }
 }

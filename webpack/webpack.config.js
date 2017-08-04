@@ -16,6 +16,7 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 console.log(process.env.NODE_ENV)
 module.exports = {
     context: path.join(__dirname,'..'),
+    devtool: 'source-map',
     entry: [
         'webpack-hot-middleware/client?path=http://localhost:3001/__webpack_hmr',
         './client/index.js'
@@ -36,16 +37,14 @@ module.exports = {
                 test:/\.css$/,
                 loaders: ['style-loader','css-loader']
             },
-            {
-                test:/\.scss$/,
-                loaders: ['style-loader','css-loader','sass-loader']
-            },
-            /*
+            // {
+            //     test:/\.scss$/,
+            //     loaders: ['style-loader','css-loader','sass-loader']
+            // },
             {
                 test:/\.less$/,
                 loaders: ['style-loader','css-loader','less-loader']
-            }*/
-            
+            },
             {
                 test: webpack_isomorphic_tools_plugin.regular_expression('images'),
                 loader: 'url-loader?limit=10240', // any image below or equal to 10K will be converted to inline base64 instead
@@ -57,6 +56,6 @@ module.exports = {
         webpack_isomorphic_tools_plugin,
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.BannerPlugin("This file is created by Luo Xia")
+        new webpack.BannerPlugin("This file is created by Li shoulong")
     ]
 }

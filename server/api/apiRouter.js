@@ -12,6 +12,8 @@ import sortUsers from './sortUsers';
 import getUserInfo from './getUserInfo';
 import addProperty from './addProperty';
 import getPropertyList from './getPropertyList';
+import addBundle from './addBundle';
+import getBundleList from './getBundleList';
 
 const router = Express.Router();
 
@@ -38,8 +40,11 @@ router.get('/sortUsers',sortUsers);
 router.post('/getUserInfo',getUserInfo);
 
 // 增查属性接口
-router.post('/property',auth);
 router.post('/property', addProperty);
 router.get('/propertyList',getPropertyList);
+
+// bundles api
+router.post('/bundle', addBundle);
+router.get('/getBundles',getBundleList);
 
 export default router;
