@@ -20,8 +20,10 @@ export default class User extends React.Component {
         this.getCustomers('24008').then(resp => {
             console.log(resp);
             const { customers } = this.state;
-            customers.push(resp);
-            this.setState({customers});
+            if(resp.code == 0){
+                customers.push(resp.data);
+                this.setState({customers});
+            }
         });
     }
     render(){
