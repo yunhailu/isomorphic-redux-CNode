@@ -25,8 +25,6 @@ export default class Bundles extends Component {
         if(!bundle.key){
             bundle.key = i;
         }
-        // bundle.operate = '查看';
-        bundle.createdTime = !!bundle.createdTime.minute ? bundle.createdTime.minute: bundle.createdTime;
         return bundle;
     })
   }
@@ -88,7 +86,6 @@ export default class Bundles extends Component {
             <Col span="6"><span>{post.time.minute}</span></Col>
           </Row>
         )} */}
-        <Button><Link to="/publish">添加新资源</Link></Button>
         <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.currentBundles} bordered/>
         <Pagination style={{marginTop:'5px'}} showQuickJumper defaultCurrent={1} total={bundles.length} defaultPageSize={15} onChange={this.onChange} />
       </div>

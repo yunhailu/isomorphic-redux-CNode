@@ -2,8 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import {Button, Input, Form, Row, Col, Select} from 'antd'
-import {fetchUser} from '../../actions/actions'
+import {fetchUser, fetchBundles} from '../../actions/actions'
 import { getCookie } from '../../util/authService'
+import fetch from 'isomorphic-fetch'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -13,20 +14,27 @@ class Detail extends React.Component {
         super(props)
         this.handleDatas = this.handleDatas.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleClick = this.handleClick.bind(this)
+        this.getItemFromList = this.getItemFromList.bind(this)
+        const initialStatus = 
         this.state = {
             bundleItem: "",
-            partUserType: "",
-            businessType: "",
-            utilityType: ""
+            partUserType: this.getItemFromList(props.bundlelists, props.params.id).partUserType,
+            businessType: this.getItemFromList(props.bundlelists, props.params.id).businessType,
+            utilityType: this.getItemFromList(props.bundlelists, props.params.id).utilityType,
+            isFailed: false
         }
     }
     componentDidMount(){
         const {bundlelists,params} = this.props;
         console.log('cratedparams',params);
-        let bundle = bundlelists.filter((bundle)=>bundle['_id'] === params.id)[0];
+        let bundle = this.getItemFromList(bundlelists, params.id);
         this.setState({
           bundleItem: bundle
         })
+    }
+    getItemFromList(list, id){
+        return list.filter((bundle)=>bundle['_id'] === id)[0];
     }
     componentWillReceiveProps(nextProps){
       const {params} = nextProps;
@@ -64,6 +72,37 @@ class Detail extends React.Component {
     }
     handleClick(){
       console.log('更新资源文件')
+      const { params, dispatch } = this.props;
+      const id = params.id,
+            partUserType = this.state.partUserType,
+            businessType = this.state.businessType,
+            utilityType = this.state.utilityType;
+      const content = JSON.stringify({
+                id,
+                partUserType,
+                businessType,
+                utilityType
+            });
+      console.log('content', content);
+      fetch('/api/updateBundle',{
+            method: 'PUT',
+            headers:{
+                "Content-Type": "application/json",
+                "Content-Length": content.length.toString()
+            },
+            body: content
+        }).then(res=>{
+            if(res.ok){
+                console.log('detail',res.json._id)
+                dispatch(fetchUser())
+                dispatch(fetchBundles())
+                browserHistory.push('/')
+            } else {
+                this.setState({
+                    isFailed: true
+                })
+            }
+        })
     }
     goback(){
       browserHistory.goBack();
@@ -109,24 +148,24 @@ class Detail extends React.Component {
                     <Row>
                         <Col>
                             <FormItem {...formItemLayoutLength} label="资源URL">
-                                <Input value={resourceUrl} />
+                                <Input value={resourceUrl} disabled/>
                             </FormItem>
                         </Col>
                         <Col>
                             <FormItem {...formItemLayoutLength} label="创建时间">
-                                <Input value={createdTime} />
+                                <Input value={createdTime} disabled />
                             </FormItem>
                         </Col>
                     </Row>
                     <Row>
                         <Col span={8}>
                             <FormItem {...formItemLayoutText} label="bundle版本号">
-                                <Input value={bundleVersion} />
+                                <Input value={bundleVersion} disabled />
                             </FormItem>
                         </Col>
                         <Col span={12}>
                             <FormItem {...formItemLayoutText} label="线上bundle版本号">
-                                <Input value={onlinebundleVersion} />
+                                <Input value={onlinebundleVersion} disabled />
                             </FormItem>
                         </Col>
                     </Row>
@@ -138,31 +177,31 @@ class Detail extends React.Component {
                         </Col>
                         <Col span={12}>
                             <FormItem {...formItemLayoutText} label="资源ID">
-                                <Input value={resourceId} />
+                                <Input value={resourceId}  disabled/>
                             </FormItem>
                         </Col>
                     </Row>
                     <Row>
                         <Col span={8}>
                             <FormItem {...formItemLayoutText} label="支持app最低版本">
-                                <Input value={appType} />
+                                <Input value={appType} disabled />
                             </FormItem>
                         </Col>
                         <Col span={12}>
                             <FormItem {...formItemLayoutText} label="base版本">
-                                <Input value={baseType} />
+                                <Input value={baseType} disabled />
                             </FormItem>
                         </Col>
                     </Row>
                     <Row>
                         <Col span={8}>
                             <FormItem {...formItemLayoutText} label="是否预加载">
-                                <Input value={beforeValue} />
+                                <Input value={beforeValue} disabled />
                             </FormItem>
                         </Col>
                         <Col span={12}>
                             <FormItem {...formItemLayoutText} label="是否强制更新">
-                                <Input value={forceValue} />
+                                <Input value={forceValue} disabled />
                             </FormItem>
                         </Col>
                     </Row>
@@ -182,7 +221,7 @@ class Detail extends React.Component {
                     </Row>
                     <Row>
                         <FormItem {...formItemLayoutLength} label="描述">
-                            <Input type="textarea" ref="content" autosize={{minRows:6}} value={description} />
+                            <Input type="textarea" ref="content" autosize={{minRows:6}} value={description} disabled />
                         </FormItem>
                     </Row>
                     <Row>

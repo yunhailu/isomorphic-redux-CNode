@@ -50,7 +50,7 @@ export default function(req,res,next){
             resourceUrl,
             beforeValue,
             forceValue,
-            createdTime: time
+            createdTime: time.minute
         })
     })
     .then(doc => {

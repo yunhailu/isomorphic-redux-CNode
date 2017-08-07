@@ -14,6 +14,7 @@ import addProperty from './addProperty';
 import getPropertyList from './getPropertyList';
 import addBundle from './addBundle';
 import getBundleList from './getBundleList';
+import updateBundle from './updateBundle';
 
 const router = Express.Router();
 
@@ -46,5 +47,6 @@ router.get('/propertyList',getPropertyList);
 // bundles api
 router.post('/bundle', addBundle);
 router.get('/getBundles',getBundleList);
+router.put('/updateBundle',updateBundle);
 
 export default router;

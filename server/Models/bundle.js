@@ -20,8 +20,8 @@ const BundleSchema = new mongoose.Schema({
     },
     beforeValue: String,
     forceValue: String,
-    createdTime: {},
-    updateTime: {},
+    createdTime: String,
+    updateTime: String,
     isDel: {
         type: Boolean,
         default: false

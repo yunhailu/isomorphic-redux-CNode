@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import { Link } from 'react-router'
 import Picker from './Picker'
 import TableBundles from './TableBundles'
 import {selectAuthor,fetchPostsIfNeeded,invalidatePosts,fetchItem} from '../actions/actions'
@@ -61,6 +62,7 @@ class List extends React.Component {
                                     </Col>
                                 </Row>
                             </Form>
+                            <Button><Link to="/publish">添加新资源</Link></Button>
                               {bundlelists.length > 0 &&
                             <div>
                                 <TableBundles bundles={bundlelists} onShow={this.handleShow} />
