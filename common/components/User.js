@@ -4,7 +4,7 @@
 import React from 'react';
 import { Router, Route, Link ,browserHistory} from 'react-router'
 import { Tabs, Table, Row, Col, Button,Menu, Icon,Input, Layout} from 'antd'
-import fetch from 'isomorphic-fetch'
+import { getCustomer } from '../fetch';
 const Search = Input.Search;
 export default class User extends React.Component {
     constructor(props){
@@ -14,22 +14,7 @@ export default class User extends React.Component {
         }
     }
     getCustomers(id){
-        const content = JSON.stringify({ id });
-        return fetch('/api/getCustomer',{
-            method: 'POST',
-            headers:{
-                "Content-Type": "application/json",
-                "Content-Length": content.length.toString()
-            },
-            body: content
-        }).then(res=>{
-            console.log(res);
-            if(res.ok){
-                return res.json();
-            } else {
-                console.log('Get customers Failed !')
-            }
-        })
+        return getCustomer({id});
     }
     componentDidMount(){
         this.getCustomers('24008').then(resp => {

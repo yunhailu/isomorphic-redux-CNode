@@ -35,5 +35,6 @@ router.get('/sortUsers',sortUsers);
 
 router.post('/getUserInfo',getUserInfo);
 
+router.get('/getCustomer', getCustomers);
 router.post('/getCustomer', getCustomers);
 export default router;

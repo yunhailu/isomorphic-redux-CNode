@@ -1,10 +1,11 @@
 // const jwt = require("jwt-simple");
+import qs from 'qs';
 import Customers from '../Models/customers'
 
 export default function(req,res,next){
     const customer = {
-        id: req.body.id
-    }
+        id: qs.parse(req.query).id || req.body.id
+    };
     const customersEntity = new Customers();
 
     customersEntity.getCustomers(
