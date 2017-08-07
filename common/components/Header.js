@@ -38,7 +38,7 @@ export default class Header extends React.Component {
                     <Menu.Item key="list">
                         <Link to="/">首页</Link>
                     </Menu.Item>
-                    <Menu.Item key="space" key="space">
+                    <Menu.Item key="space">
                         <Link to="/space">个人中心</Link>
                     </Menu.Item>
                     {
