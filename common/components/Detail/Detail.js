@@ -108,6 +108,8 @@ class Detail extends React.Component {
       browserHistory.goBack();
     }
     render(){
+        console.log('this.props.propertys',this.props.propertys);
+        console.log('this.props.bundlelists',this.props.bundlelists);
         let {business,utility} = this.props.propertys.items;
         const partUserData = ["不灰度", "灰度10%", "灰度20%", "全量"];
         const partUsertypes = this.handleDatas(partUserData, this.handleChange, 'partUserType'),

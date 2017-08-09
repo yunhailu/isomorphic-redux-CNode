@@ -12,10 +12,6 @@ export default class Headers extends React.Component {
        }
         this.handleNavigator = this.handleNavigator.bind(this);
     }
-    handleSearch(author){
-        this.refs.search.input.refs.input.value=''
-        browserHistory.push(`/list/${author}`)
-    }
     handleNavigator(e){
         this.setState({
             current: e.key
@@ -25,33 +21,22 @@ export default class Headers extends React.Component {
         const {user,logOut} = this.props;
         return (
             <Header>
-                <Menu selectedKeys={[this.state.current]} theme="dark" onClick={this.handleNavigator} mode="horizontal">
+                <Menu style={{paddingTop: 8}} selectedKeys={[this.state.current]} theme="dark" onClick={this.handleNavigator} mode="horizontal">
                     <Menu.Item key="logo">
-                        <Link to="/"><img src="https://o4j806krb.qnssl.com/public/images/cnodejs_light.svg"/></Link>
+                        <Link to="/"><img  style={{width: 50, width: 50}} src="https://img.58cdn.com.cn/zhuanzhuan/Mzhuanzhuan/m/img/logo.png"/></Link>
                     </Menu.Item>
-                    <Menu.Item key="search">
-                        <Search
-                            ref='search'
-                            placeholder="搜索指定用户的文章"
-                            onSearch={value => this.handleSearch(value)}
-                        />
+                    <Menu.Item key="title">
+                        <Link to="/">RN资源管理系统</Link>
                     </Menu.Item>
-                    <Menu.Item key="list">
+                    <Menu.Item key="list" style={{marginLeft: 40}}>
                         <Link to="/">首页</Link>
                     </Menu.Item>
                     {
-                        user.name && (
-                            <Menu.Item key="publish">
-                                <Link to="/publish">发表文章</Link>
-                            </Menu.Item>
-                        )
-                    }
-                    {
-                        user.name && <Menu.Item>用户:{user.name}</Menu.Item>
+                        user.name && <Menu.Item style={{marginLeft: 40}}>用户:{user.name}</Menu.Item>
                     }
                     {
                         !user.name && (
-                            <Menu.Item>
+                            <Menu.Item style={{marginLeft: 40}}>
                                 <Link to="/logIn">登录</Link>
                             </Menu.Item>
                         )

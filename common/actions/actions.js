@@ -56,7 +56,7 @@ function requestPropertyList(){
         type: REQUEST_PROPERTY
     }
 }
-function receiveProperty(json){
+export function receiveProperty(json){
     return {
         type: RECEIVE_PROPERTY,
         propertys: json,
@@ -134,7 +134,7 @@ function requestBundles(){
         type: REQUEST_BUNDLES
     }
 }
-function receiveBundles(json){
+export function receiveBundles(json){
     return {
         type: RECEIVE_BUNDLES,
         bundles: json,

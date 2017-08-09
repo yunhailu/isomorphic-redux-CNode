@@ -42,8 +42,8 @@ class App extends React.Component {
                                 mode="vertical"
                                 defaultSelectedKeys={['1']}
                             >
-                            <Menu.Item key="1">资源管理</Menu.Item>
-                            <Menu.Item key="2">审核上线</Menu.Item>
+                                <Menu.Item key="1">资源管理</Menu.Item>
+                                <Menu.Item key="2">审核上线</Menu.Item>
                             </Menu>
                         </Sider>
                         <Content>

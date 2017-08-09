@@ -15,11 +15,12 @@ import getPropertyList from './getPropertyList';
 import addBundle from './addBundle';
 import getBundleList from './getBundleList';
 import updateBundle from './updateBundle';
+const co = require('co')
 
 const router = Express.Router();
 
-router.get('/post',getList);
-router.post('/post',auth);
+router.get('/post', co.wrap(getList));
+router.post('/post', auth);
 router.post('/post',addPost);
 
 router.get('/detail',getItem);
@@ -41,12 +42,12 @@ router.get('/sortUsers',sortUsers);
 router.post('/getUserInfo',getUserInfo);
 
 // 增查属性接口
-router.post('/property', addProperty);
-router.get('/propertyList',getPropertyList);
+router.post('/property', co.wrap(addProperty));
+router.get('/propertyList',co.wrap(getPropertyList));
 
 // bundles api
-router.post('/bundle', addBundle);
-router.get('/getBundles',getBundleList);
-router.put('/updateBundle',updateBundle);
+router.post('/bundle', co.wrap(addBundle));
+router.get('/getBundles',co.wrap(getBundleList));
+router.put('/updateBundle',co.wrap(updateBundle));
 
 export default router;

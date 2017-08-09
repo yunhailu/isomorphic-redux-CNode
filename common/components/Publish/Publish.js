@@ -202,7 +202,7 @@ class Publish extends React.Component {
                                 {partUsertypes}
                             </FormItem>
                         </Col>
-                        <Col span={12}>
+                        <Col span={11}>
                             <FormItem {...formItemLayoutText} label="简述">
                                 <Input placeholder="placeholder" onChange={(e)=>this.setState({simDescription: e.target.value})}/>
                             </FormItem>

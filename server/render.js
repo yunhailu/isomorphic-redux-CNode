@@ -4,13 +4,14 @@ import {Provider} from 'react-redux';
 import reducerApp from '../common/reducers/index';
 import React from 'react';
 import {RouterContext,match} from 'react-router';
-import {fetchBundles, fetchPropertyList} from '../common/actions/actions';
+import {receiveBundles, receiveProperty} from '../common/actions/actions';
 import storeApp from '../common/configStore';
 import routesApp from '../common/routes';
 import fetch from 'isomorphic-fetch'
 import fs from 'fs';
 import path from 'path';
 import reactCookie from 'react-cookie';
+import * as getInitDatas from './util/initialData';
 
 function renderFullPage(html,initState){
     const main = JSON.parse(fs.readFileSync(path.join(__dirname,'../webpack/webpack-assets.json'))).javascript.main;
@@ -46,12 +47,15 @@ export default function handleRender(req,res){
             console.log('redirectLocation',redirectLocation);
             res.redirect(302,redirectLocation.pathname+redirectLocation.search)
         } else if(renderProps){
-            console.log('renderProps');
             const store = storeApp({});
             Promise.all([
-                store.dispatch(fetchBundles()),
-                store.dispatch(fetchPropertyList())
+                getInitDatas.getBundles(),
+                getInitDatas.getPropertys()
             ])
+            .then(([bundlesList, propertyList]) => {
+                store.dispatch(receiveBundles(bundlesList)),
+                store.dispatch(receiveProperty(propertyList))
+            })
             .then(()=>{
                 const html = renderToString(
                     <Provider store={store}>

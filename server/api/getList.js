@@ -2,7 +2,7 @@ import qs from 'qs';
 import Post from '../Models/post';
 const postEntity = new Post();
 
-export default function(req,res,next){
+export default function * (req,res,next){
     const author = qs.parse(req.query).author;
     let query = {
         author

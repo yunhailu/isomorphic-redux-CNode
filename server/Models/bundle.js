@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 import db from './db'
+const autoIncrement = require('mongoose-auto-increment');
+
 mongoose.Promise = global.Promise
 const BundleSchema = new mongoose.Schema({
     partUserType: String,
@@ -10,10 +12,6 @@ const BundleSchema = new mongoose.Schema({
     description: String,
     simDescription: String,
     resourceUrl: String,
-    resourceId: {
-        type: Number, 
-        default: 0
-    },
     bundleVersion: {
         type: String, 
         default: 'abcdeffasdddf'
@@ -27,5 +25,9 @@ const BundleSchema = new mongoose.Schema({
         default: false
     }
 });
-
+BundleSchema.plugin(autoIncrement.plugin, {
+  model: 'bundle',
+  field: 'resourceId',
+  startAt: 0,
+});
 export default db.model('bundle',BundleSchema);

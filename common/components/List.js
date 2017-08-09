@@ -45,24 +45,27 @@ class List extends React.Component {
                             <Form
                                 className="ant-advanced-search-form"
                                 onSubmit={this.handleSearch}
+                                style={{textAlign: 'center'}}
                             >
-                                <Row>
-                                    <Col span={8}>
+                                <Row style={{paddingTop: 10}}>
+                                    <Col span={2}>
+                                        <Button style={{marginLeft: 10}}><Link to="/publish">添加新资源</Link></Button>
+                                    </Col>
+                                    <Col span={6}>
                                         <FormItem {...formItemLayout} label="资源ID">
                                             <Input placeholder="placeholder" />
                                         </FormItem>
                                     </Col>
-                                    <Col span={8}>
+                                    <Col span={6}>
                                         <FormItem {...formItemLayout} label="资源名称">
                                             <Input placeholder="placeholder" />
                                         </FormItem>
                                     </Col>
-                                    <Col span={6}>
+                                    <Col span={4}>
                                         <Button type="primary" htmlType="submit">筛选</Button>
                                     </Col>
                                 </Row>
                             </Form>
-                            <Button><Link to="/publish">添加新资源</Link></Button>
                               {bundlelists.length > 0 &&
                             <div>
                                 <TableBundles bundles={bundlelists} onShow={this.handleShow} />
