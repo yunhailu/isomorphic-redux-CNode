@@ -55,8 +55,8 @@ export default class Bundles extends Component {
         title: '资源ID',
         dataIndex: 'resourceId'
     },{
-        title: 'bundle版本号',
-        dataIndex: 'bundleVersion',
+        title: 'bundle名字',
+        dataIndex: 'bundleName',
     },{
         title: '业务线',
         dataIndex: 'businessType',

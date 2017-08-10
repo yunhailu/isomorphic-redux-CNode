@@ -12,9 +12,15 @@ const BundleSchema = new mongoose.Schema({
     description: String,
     simDescription: String,
     resourceUrl: String,
-    bundleVersion: {
-        type: String, 
-        default: 'abcdeffasdddf'
+    bundleName: {
+        ios: {
+            baseName: String,
+            projectName: String
+        },
+        android: {
+            baseName: String,
+            projectName: String
+        }
     },
     beforeValue: String,
     forceValue: String,
@@ -30,4 +36,9 @@ BundleSchema.plugin(autoIncrement.plugin, {
   field: 'resourceId',
   startAt: 0,
 });
+
+BundleSchema.virtual('bundleNameDisplay').get(function () {
+  return Object.values(this.bundleName);
+});
+
 export default db.model('bundle',BundleSchema);

@@ -117,8 +117,8 @@ class Detail extends React.Component {
               utilityTypes = this.handleDatas(utility, this.handleChange, 'utilityType');
         const resourceUrl = this.state.bundleItem.resourceUrl,
               createdTime = this.state.bundleItem.createdTime,
-              bundleVersion = this.state.bundleItem.bundleVersion,
-              onlinebundleVersion = this.state.bundleItem.onlinebundleVersion || 'wait...',
+              bundleName = this.state.bundleItem.bundleName,
+              onlinebundleName = this.state.bundleItem.onlinebundleName || 'wait...',
               resourceId = this.state.bundleItem.resourceId,
               appType = this.state.bundleItem.appType,
               baseType = this.state.bundleItem.baseType,
@@ -162,12 +162,12 @@ class Detail extends React.Component {
                     <Row>
                         <Col span={8}>
                             <FormItem {...formItemLayoutText} label="bundle版本号">
-                                <Input value={bundleVersion} disabled />
+                                <Input value={bundleName} disabled />
                             </FormItem>
                         </Col>
                         <Col span={12}>
                             <FormItem {...formItemLayoutText} label="线上bundle版本号">
-                                <Input value={onlinebundleVersion} disabled />
+                                <Input value={onlinebundleName} disabled />
                             </FormItem>
                         </Col>
                     </Row>

@@ -1,3 +1,5 @@
+const baseDir = __dirname
+
 export default {
     dbaddr:'localhost',
     dbport: 27017,
@@ -6,5 +8,6 @@ export default {
     dbpwd: '',
     serverip: 'localhost',
     serverport: 3000,
-    cookieDomain: '.58.com'
+    cookieDomain: '.58.com',
+    baseDir
 }
