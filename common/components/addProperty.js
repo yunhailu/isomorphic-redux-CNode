@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import fetch from 'isomorphic-fetch';
 import {browserHistory} from 'react-router';
 import {Tabs, Input, Button} from 'antd';
-import { getCookie } from '../util/authService'
 import {fetchPropertyList} from '../actions/actions';
 const TabPane = Tabs.TabPane;
 
@@ -23,6 +22,7 @@ class AddProperty extends React.Component {
             })
         fetch('/api/property',{
             method: 'POST',
+            credentials: "include",
             headers:{
                 "Content-Type": "application/json",
                 "Content-Length": content.length.toString()
@@ -81,10 +81,9 @@ class AddProperty extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { selectedAuthor,user } = state
+  const { user } = state
   return {
-    user,
-    selectedAuthor
+    user
   }
 }
 export default connect(mapStateToProps)(AddProperty)

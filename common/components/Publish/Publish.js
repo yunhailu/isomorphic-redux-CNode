@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import fetch from 'isomorphic-fetch'
 import {browserHistory} from 'react-router';
 import {Form, Row, Col,Input,Button,Menu,Dropdown,Radio,Select} from 'antd'
-import {fetchUser, fetchBundles, fetchPropertyList} from '../../actions/actions'
+import {fetchBundles, fetchPropertyList} from '../../actions/actions'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -77,6 +77,7 @@ class Publish extends React.Component {
             })
         fetch('/api/bundle',{
             method: 'POST',
+            credentials: "include",
             headers:{
                 "Content-Type": "application/json",
                 "Content-Length": content.length.toString()
@@ -87,7 +88,6 @@ class Publish extends React.Component {
                 this.state.resourceUrl = '';
                 this.state.description = '';
                 this.state.simDescription = '';
-                dispatch(fetchUser())
                 dispatch(fetchBundles())
                 browserHistory.push('/')
             } else {
@@ -246,10 +246,9 @@ class Publish extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { selectedAuthor,user,propertys } = state
+  const { user,propertys } = state
   return {
     user,
-    selectedAuthor,
     propertys
   }
 }

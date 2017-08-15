@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react'
 import { Router, Route, Link, browserHistory } from 'react-router'
-import fetch from 'isomorphic-fetch'
 import { Card,Row,Col,Rate,Icon,Pagination,Table, Button } from 'antd';
 export default class Bundles extends Component {
   constructor(props){
@@ -39,7 +38,7 @@ export default class Bundles extends Component {
     })
   }
   render() {
-    const {onShow,bundles} = this.props;
+    const {bundles} = this.props;
     const columns = [{
         title: '操作',
         dataIndex: 'operate',

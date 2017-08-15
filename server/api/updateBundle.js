@@ -3,9 +3,14 @@ const BundleEntity = new Bundle();
 
 export default function(req,res,next){
   const _id = req.body.id;
+  // the userName is getted from the register part.
+  const userName = req.session.user.userName;
   delete req.body.id;
-  req.body.updateTime = new Date();
-  Bundle.findByIdAndUpdate(_id,req.body,{new:true})
+  const updateInfo = {
+    updateTime: new Date(),
+    updatePerson: userName
+  }
+  Bundle.findByIdAndUpdate(_id,{"$pushAll": {"updateInfo": [updateInfo]}, $set:req.body},{new:true})
         .exec()
         .then(function(bundle){
           console.log('id',_id);

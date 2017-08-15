@@ -25,7 +25,7 @@ const BundleSchema = new mongoose.Schema({
     beforeValue: String,
     forceValue: String,
     createdTime: String,
-    updateTime: String,
+    updateInfo: Array,
     isDel: {
         type: Boolean,
         default: false
@@ -37,8 +37,9 @@ BundleSchema.plugin(autoIncrement.plugin, {
   startAt: 0,
 });
 
-BundleSchema.virtual('bundleNameDisplay').get(function () {
-  return Object.values(this.bundleName);
-});
-
+BundleSchema
+    .virtual('bundleNameDisplay')
+    .get(function () {
+        return Object.values(this.bundleName);
+    });
 export default db.model('bundle',BundleSchema);

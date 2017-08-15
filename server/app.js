@@ -8,6 +8,7 @@ import logger from 'morgan';
 import WBCas from './middleware/wbauth';
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const cors = require('cors');
 
 import handleRender from './render';
 
@@ -16,9 +17,11 @@ import config from '../config';
 
 
 const app = new express();
-const port = 3000;
-
-app.set('jwtTokenSecret',"lishoulong");
+const port = 8080;
+const options = {
+    origin: true,
+    credentials: true
+  };
 
 if(process.env.NODE_ENV === 'development'){
     app.use(logger('dev'));
@@ -33,17 +36,20 @@ app.use(session({
         maxAge: 2 * 60 * 60 * 1000
     }
 }));
+app.use(cors(options));
+app.use(WBCas());//used for the 58 login;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname,'../assets')))
 app.use(express.static(path.join(__dirname,'../public')))
 app.use(express.static(path.join(__dirname,'../dist')))
-// app.use(WBCas());//used for the 58 login;
 app.all("*",(req,res,next)=>{
   res.header("Access-Control-Allow-Origin", "*");
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With');
+  // res.setHeader( "Access-Control-Allow-Origin", req.headers.origin );
+  res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Content-Length, Authorization, Accept, X-Requested-With');
   res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+  console.log('okla');
   next();
 });
 app.use('/api',apiRouter);

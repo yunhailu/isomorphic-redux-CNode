@@ -4,13 +4,12 @@ import {Provider} from 'react-redux';
 import reducerApp from '../common/reducers/index';
 import React from 'react';
 import {RouterContext,match} from 'react-router';
-import {receiveBundles, receiveProperty} from '../common/actions/actions';
+import {receiveBundles, receiveProperty, receiveUser} from '../common/actions/actions';
 import storeApp from '../common/configStore';
 import routesApp from '../common/routes';
 import fetch from 'isomorphic-fetch'
 import fs from 'fs';
 import path from 'path';
-import reactCookie from 'react-cookie';
 import * as getInitDatas from './util/initialData';
 
 function renderFullPage(html,initState){
@@ -39,7 +38,6 @@ function renderFullPage(html,initState){
 }
 
 export default function handleRender(req,res){
-    reactCookie.plugToRequest(req, res);
     match({routes:routesApp,location:req.url},(err,redirectLocation,renderProps)=>{
         if(err){
             res.status(500).end(`server error: ${err}`)
@@ -50,11 +48,13 @@ export default function handleRender(req,res){
             const store = storeApp({});
             Promise.all([
                 getInitDatas.getBundles(),
-                getInitDatas.getPropertys()
+                getInitDatas.getPropertys(),
+                getInitDatas.getUser(req)
             ])
-            .then(([bundlesList, propertyList]) => {
+            .then(([bundlesList, propertyList, user]) => {
                 store.dispatch(receiveBundles(bundlesList)),
-                store.dispatch(receiveProperty(propertyList))
+                store.dispatch(receiveProperty(propertyList)),
+                store.dispatch(receiveUser(user))
             })
             .then(()=>{
                 const html = renderToString(

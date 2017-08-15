@@ -32,26 +32,20 @@ export default class Headers extends React.Component {
                         <Link to="/">首页</Link>
                     </Menu.Item>
                     {
-                        user.name && <Menu.Item style={{marginLeft: 40}}>用户:{user.name}</Menu.Item>
+                        user.userName && <Menu.Item style={{marginLeft: 40}}>用户:{user.userName}</Menu.Item>
                     }
                     {
-                        !user.name && (
-                            <Menu.Item style={{marginLeft: 40}}>
-                                <Link to="/logIn">登录</Link>
-                            </Menu.Item>
-                        )
-                    }
-                    {
-                        !user.name && (
+                        user.isRNAdmin && (
                             <Menu.Item>
-                                <Link to="/reg">注册</Link>
+                                <Link to="/reg">添加新用户</Link>
                             </Menu.Item>
                         )
                     }
                     {
-                        user.name && (
+                        user.userName && (
                             <Menu.Item key="logout">
-                                <span onClick={()=>logOut()}>退出</span>
+                                {/* <span onClick={()=>logOut()}>退出</span> */}
+                                <a href="http://localhost:8080/api/logout">退出</a>
                             </Menu.Item>
                         )
                     }

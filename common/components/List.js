@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import { Link } from 'react-router'
 import Picker from './Picker'
 import TableBundles from './TableBundles'
-import {selectAuthor,fetchPostsIfNeeded,invalidatePosts,fetchItem} from '../actions/actions'
 import { Form, Row, Col, Spin ,Button,Menu, Icon,Input, Layout} from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
 const FormItem = Form.Item;
@@ -11,22 +10,6 @@ const FormItem = Form.Item;
 class List extends React.Component {
     constructor(props){
         super(props);
-        this.handleShow = this.handleShow.bind(this)
-    }
-    componentDidMount(){
-        const {dispatch} = this.props;
-        //dispatch(fetchPostsIfNeeded(selectedAuthor))
-    }
-    // componentWillReceiveProps(nextProps){
-    //     if(nextProps.selectedAuthor !== this.props.selectedAuthor){
-    //         console.log('我要加载新的subreddit了')
-    //         const {dispatch,selectedAuthor} = nextProps;
-    //         dispatch(fetchPostsIfNeeded(selectedAuthor))
-    //     }
-    // }
-    handleShow(id){
-        const {dispatch} = this.props;
-        dispatch(fetchItem(id));
     }
     handleSearch(){
         console.log('submit');
@@ -68,7 +51,7 @@ class List extends React.Component {
                             </Form>
                               {bundlelists.length > 0 &&
                             <div>
-                                <TableBundles bundles={bundlelists} onShow={this.handleShow} />
+                                <TableBundles bundles={bundlelists} />
                             </div> 
                             } 
                         </div>

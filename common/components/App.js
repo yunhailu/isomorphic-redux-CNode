@@ -1,12 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { Router, Route, Link,browserHistory } from 'react-router'
-import {fetchUser, logOut} from '../actions/actions'
+import {logOut, fetchUser} from '../actions/actions'
 import List from './List'
 import MyHeader from './Headers'
 import fetch from 'isomorphic-fetch'
 import {Button,Menu, Icon,Input, Layout} from 'antd'
-import { signOut } from '../util/authService'
 
 const { Header, Footer, Sider, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -18,19 +17,30 @@ class App extends React.Component {
        super(props);
        this.handleLogout = this.handleLogout.bind(this)
     }
-    handleLogout(){
-        const {dispatch} = this.props;
-        signOut();
-        console.log('signOut',signOut);
-        dispatch(logOut());
-        browserHistory.push('/');
-    }
     componentDidMount(){
         const {dispatch} = this.props;
-        dispatch(fetchUser())
+        // dispatch(fetchUser());
+    }
+    handleLogout(){
+        const {dispatch} = this.props;
+        fetch('/api/logout',{
+                method: 'GET',
+                credentials: "include"
+            })
+        // .then(res => res.json())
+        // .then(json=>{
+        //     console.log('json',json);
+        //     if(json.ok){
+        //         dispatch(logOut());
+        //         // browserHistory.push('/')
+        //     } else {
+        //         console.log("退出失败")
+        //     }
+        // })
     }
     render() {
         const {user} = this.props;
+        console.log('user', user);
         return (
             <div id="hey">
                 <Layout>

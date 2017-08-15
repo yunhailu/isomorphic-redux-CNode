@@ -128,7 +128,7 @@ function buildPackage (bundle){
 export default function (req,res,next){
     const body = req.body;
     generateBundle(body).then((bundle) => {
-                          return buildPackage(bundle,res)
+                          return buildPackage(bundle)
                         })
                         .then(([bundleAndr, bundleIos]) => {
                             const bundleName = {
@@ -136,19 +136,12 @@ export default function (req,res,next){
                                 android: bundleAndr
                             }
                             console.log('tempBundleId',tempBundleId);
-                            Bundle.findOneAndUpdate({resourceId: tempBundleId}, {$set:{bundleName:bundleName}}, {new: true}, function(err, doc){
-                                if(err){
-                                    console.log("Something wrong when updating data!");
-                                }
-
-                                console.log(doc);
+                            return Bundle.findOneAndUpdate({resourceId: tempBundleId}, {$set:{bundleName:bundleName}}, {new: true})
+                        })
+                        .then(function(doc){console.log(doc);
                                 return res.json({ok: true, message: "success", data: {}});
-                            })
                         })
                         .catch(err => {
-                            throw new Error('balabala ');
+                            throw new Error(err);
                         })
-    // console.log('sdfsd')
-    // buildPackage('sssssdd')
-    // generateBundle('ss');
 }

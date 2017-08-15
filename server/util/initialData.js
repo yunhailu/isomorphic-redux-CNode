@@ -1,5 +1,6 @@
 import Bundle from '../Models/bundle';
 import Property from '../Models/property';
+import User from '../Models/user';
 
 export function getBundles(){
     return Bundle.find({})
@@ -36,4 +37,21 @@ export function getPropertys(){
                             return err;
                         }
                     })
+}
+
+export function getUser(req){
+    const userName = req.session.user.userName;
+    console.log('userName',userName);    
+    return User.findOne({
+        userName
+    })
+    .exec()
+    .then(function(userInfo){
+        return userInfo._doc
+    })
+    .catch(function(err){
+        if(err){
+            return err;
+        }
+    })
 }

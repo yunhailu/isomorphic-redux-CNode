@@ -13,6 +13,7 @@ var http = require('http');
 var https = require('https');
 var url = require('url');
 var cheerio = require('cheerio');
+var path = require('path');
 
 /**
  * Initialize CAS with the given `options`.
@@ -59,6 +60,7 @@ var CAS = module.exports = function CAS(options) {
         throw new Error('offline_url或者online_url格式错误');
     }
     this.hostname = cas_url.hostname;
+    this.protocol = cas_url.protocol;
     this.port = cas_url.port || 443;
     this.base_path = cas_url.pathname;
     this.service = options.service;
@@ -119,6 +121,7 @@ CAS.prototype.authenticate = function (req, res, callback, service) {
     if (!ticket) {
         // 重定向到CAS服务端
         var redirectURL = casURL + '/login?service=' + encodeURIComponent(service);
+        console.log('loginredirectUrl', redirectURL);
         res.writeHead(307, { 'Location': redirectURL });
         res.write('<a href="' + redirectURL + '">CAS login</a>');
         res.end();
@@ -285,6 +288,36 @@ CAS.prototype.validate = function(ticket, service, callback, renew) {
     });
 };
 
+// 退出登陆
+CAS.prototype.logout = function(req, res, returnUrl){
+    if(this.base_path == '/'){
+        var casURL = 'https://' + this.hostname + ':' + this.port;
+    }else{
+        var casURL = 'https://' + this.hostname + ':' + this.port + this.base_path;
+    }
+    if(!returnUrl){
+        returnUrl = url.format({
+            protocol: req.protocol,
+            host: req.hostname
+        })
+    }
+    // logout with auto redirect
+    // var redirectURL = url.format({
+    //     protocol: this.protocol,
+    //     hostname: this.hostname,
+    //     port: this.port,
+    //     pathname: path.join(this.base_path, '/logout'),
+    //     search: `service=${encodeURIComponent(returnUrl)}`
+    // })
+    // res.location(redirectURL);
+    // res.redirect(redirectURL);
+    // res.end();
+    var redirectURL = casURL + '/logout?service=' + encodeURIComponent(returnUrl);
+    // res.writeHead(307, { 'Location': redirectURL });
+    // res.write('<a href="' + redirectURL + '">CAS login</a>');
+    return res.redirect(redirectURL);
+    // return res.end();
+}
 
 /**
  * 

@@ -2,8 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import {Button, Input, Form, Row, Col, Select} from 'antd'
-import {fetchUser, fetchBundles} from '../../actions/actions'
-import { getCookie } from '../../util/authService'
+import {fetchBundles} from '../../actions/actions'
 import fetch from 'isomorphic-fetch'
 
 const FormItem = Form.Item;
@@ -86,6 +85,7 @@ class Detail extends React.Component {
       console.log('content', content);
       fetch('/api/updateBundle',{
             method: 'PUT',
+            credentials: "include",
             headers:{
                 "Content-Type": "application/json",
                 "Content-Length": content.length.toString()
@@ -94,7 +94,6 @@ class Detail extends React.Component {
         }).then(res=>{
             if(res.ok){
                 console.log('detail',res.json._id)
-                dispatch(fetchUser())
                 dispatch(fetchBundles())
                 browserHistory.push('/')
             } else {

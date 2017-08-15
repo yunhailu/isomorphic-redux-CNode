@@ -4,10 +4,8 @@ import App from '../common/components/App';
 import List from '../common/components/List';
 import Detail from '../common/components/Detail/Detail';
 import Publish from '../common/components/Publish/Publish';
-import LogIn from '../common/components/LogIn/LogIn';
-import Reg from '../common/components/Reg';
+import Reg from '../common/components/Reg/Reg';
 import addProperty from '../common/components/addProperty';
-import {redirectToBack,redirectToLogin} from './util/authService'
 import testLogin from '../common/components/testLogin';
 
 const routes = (
@@ -18,7 +16,6 @@ const routes = (
                 <Route path="/publish" component={Publish}/>
                 <Route path="/addProperty/:type" component={addProperty}/>
         </Route>
-        <Route path="/logIn" component={LogIn} onEnter={redirectToBack}/>
         <Route path="/reg" component={Reg}/>
     </Route>
     );
