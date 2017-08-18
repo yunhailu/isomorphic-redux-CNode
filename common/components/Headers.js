@@ -18,7 +18,7 @@ export default class Headers extends React.Component {
         })
     }
     render(){
-        const {user,logOut} = this.props;
+        const {user} = this.props;
         return (
             <Header>
                 <Menu style={{paddingTop: 8}} selectedKeys={[this.state.current]} theme="dark" onClick={this.handleNavigator} mode="horizontal">
@@ -44,7 +44,6 @@ export default class Headers extends React.Component {
                     {
                         user.userName && (
                             <Menu.Item key="logout">
-                                {/* <span onClick={()=>logOut()}>退出</span> */}
                                 <a href="http://localhost:8080/api/logout">退出</a>
                             </Menu.Item>
                         )

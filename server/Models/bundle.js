@@ -26,6 +26,7 @@ const BundleSchema = new mongoose.Schema({
     forceValue: String,
     createdTime: String,
     updateInfo: Array,
+    isUseOldDependency: String,
     isDel: {
         type: Boolean,
         default: false

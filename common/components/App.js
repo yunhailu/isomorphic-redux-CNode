@@ -15,28 +15,10 @@ require('../../assets/styles/app.less')
 class App extends React.Component {
     constructor(props){
        super(props);
-       this.handleLogout = this.handleLogout.bind(this)
     }
     componentDidMount(){
         const {dispatch} = this.props;
         // dispatch(fetchUser());
-    }
-    handleLogout(){
-        const {dispatch} = this.props;
-        fetch('/api/logout',{
-                method: 'GET',
-                credentials: "include"
-            })
-        // .then(res => res.json())
-        // .then(json=>{
-        //     console.log('json',json);
-        //     if(json.ok){
-        //         dispatch(logOut());
-        //         // browserHistory.push('/')
-        //     } else {
-        //         console.log("退出失败")
-        //     }
-        // })
     }
     render() {
         const {user} = this.props;
@@ -44,8 +26,7 @@ class App extends React.Component {
         return (
             <div id="hey">
                 <Layout>
-                    <MyHeader logOut={this.handleLogout} user={user}/>
-                    {/*<img src={require('../../assets/images/test.jpg')} width='200'/>*/}
+                    <MyHeader user={user}/>
                     <Layout>
                         <Sider width="100">
                             <Menu

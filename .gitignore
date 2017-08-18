@@ -3,3 +3,5 @@ npm-debug.log
 config.js
 assets/dist/
 bundle_packages/
+client/.DS_Store
+server/.DS_Store

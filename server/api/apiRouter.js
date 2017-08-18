@@ -7,6 +7,7 @@ import updateBundle from './updateBundle';
 import reg from './reg';
 import getUser from './getUser';
 import logout from './logout';
+import bundleUpload from './bundleUpload';
 
 const router = Express.Router();
 
@@ -18,6 +19,7 @@ router.get('/propertyList',getPropertyList);
 router.post('/bundle', addBundle);
 router.get('/getBundles',getBundleList);
 router.put('/updateBundle',updateBundle);
+router.post('/bundleUpload', bundleUpload)
 
 // register
 router.post('/reg', reg);

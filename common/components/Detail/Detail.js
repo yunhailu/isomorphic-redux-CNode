@@ -25,9 +25,11 @@ class Detail extends React.Component {
         }
     }
     componentDidMount(){
+        console.log('componentDidMount');
         const {bundlelists,params} = this.props;
         console.log('cratedparams',params);
         let bundle = this.getItemFromList(bundlelists, params.id);
+        console.log('bundlessss', bundle);
         this.setState({
           bundleItem: bundle
         })
@@ -44,7 +46,8 @@ class Detail extends React.Component {
       })
     }
     handleDatas(data, func, statuType){
-        console.log('this.state.bundleItem[statuType]',this.state.bundleItem[statuType]);
+        console.log('statusType', statuType);
+        console.log('this.state.bundleItem', this.state.bundleItem);
         const valueDefault = this.state[statuType] || this.state.bundleItem[statuType];
         return <Select 
                     defaultValue={this.state.bundleItem[statuType]} 
@@ -116,14 +119,16 @@ class Detail extends React.Component {
               utilityTypes = this.handleDatas(utility, this.handleChange, 'utilityType');
         const resourceUrl = this.state.bundleItem.resourceUrl,
               createdTime = this.state.bundleItem.createdTime,
-              bundleName = this.state.bundleItem.bundleName,
+              androidbundleName = this.state.bundleItem.bundleName && this.state.bundleItem.bundleName.android && this.state.bundleItem.bundleName.android.projectName,
+              iosbundleName = this.state.bundleItem.bundleName && this.state.bundleItem.bundleName.ios && this.state.bundleItem.bundleName.ios.projectName,
               onlinebundleName = this.state.bundleItem.onlinebundleName || 'wait...',
               resourceId = this.state.bundleItem.resourceId,
               appType = this.state.bundleItem.appType,
               baseType = this.state.bundleItem.baseType,
               beforeValue = this.state.bundleItem.beforeValue,
               forceValue = this.state.bundleItem.forceValue,
-              description = this.state.bundleItem.description
+              isUseOldDependency = this.state.bundleItem.isUseOldDependency,
+              description = this.state.bundleItem.description;
         const formItemLayout = {
             labelCol: { span: 12 },
             wrapperCol: { span: 8 },
@@ -160,8 +165,20 @@ class Detail extends React.Component {
                     </Row>
                     <Row>
                         <Col span={8}>
-                            <FormItem {...formItemLayoutText} label="bundle版本号">
-                                <Input value={bundleName} disabled />
+                            <FormItem {...formItemLayoutText} label="android bundle版本号">
+                                <Input value={androidbundleName} disabled />
+                            </FormItem>
+                        </Col>
+                        <Col span={12}>
+                            <FormItem {...formItemLayoutText} label="ios bundle版本号">
+                                <Input value={iosbundleName} disabled />
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={8}>
+                            <FormItem {...formItemLayoutText} label="是否利用上次依赖">
+                                <Input value={isUseOldDependency} disabled />
                             </FormItem>
                         </Col>
                         <Col span={12}>
@@ -200,7 +217,7 @@ class Detail extends React.Component {
                                 <Input value={beforeValue} disabled />
                             </FormItem>
                         </Col>
-                        <Col span={12}>
+                        <Col span={8}>
                             <FormItem {...formItemLayoutText} label="是否强制更新">
                                 <Input value={forceValue} disabled />
                             </FormItem>

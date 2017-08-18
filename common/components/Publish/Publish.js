@@ -2,13 +2,16 @@ import React from 'react';
 import {connect} from 'react-redux';
 import fetch from 'isomorphic-fetch'
 import {browserHistory} from 'react-router';
-import {Form, Row, Col,Input,Button,Menu,Dropdown,Radio,Select} from 'antd'
+import {Form, Row, Col,Input,Button,Menu,Dropdown,Radio,Select, Spin} from 'antd'
 import {fetchBundles, fetchPropertyList} from '../../actions/actions'
+import io from 'socket.io-client'
+const socket = io('http://localhost:3000');
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 require('./Publish.less')
+
 class Publish extends React.Component {
     constructor(props){
         super(props);
@@ -16,6 +19,7 @@ class Publish extends React.Component {
         this.handleSelect = this.handleSelect.bind(this)
         this.onbeforeChange = this.onbeforeChange.bind(this)
         this.onforceChange = this.onforceChange.bind(this)
+        this.onisOldChange = this.onisOldChange.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleDatas = this.handleDatas.bind(this)
         this.state = {
@@ -33,12 +37,25 @@ class Publish extends React.Component {
             isFailed: false,
             beforeValue: '否',
             forceValue: '否',
-            optionValue: 'lala'
+            isUseOldDependency: '是',
+            optionValue: 'lala',
+            isBundleLoading: false
         }
+
+        socket.on('bundled',(data) => this.afterBundle(data, props))
     }
     componentDidMount(){
         const {dispatch} = this.props;
         dispatch(fetchPropertyList());
+    }
+    afterBundle(data,props){
+        const {dispatch} = props;
+        console.log('socketdata', data);
+        this.setState({
+            isBundleLoading: false
+        });
+        dispatch(fetchBundles())
+        browserHistory.push('/')
     }
     handleSelect(e){
         this.setState({
@@ -52,7 +69,6 @@ class Publish extends React.Component {
         })
     }
     handleClick(){
-        const {dispatch} = this.props
         const partUserType = this.state.partUserType,
               appType = this.state.appType,
               baseType = this.state.baseType,
@@ -62,7 +78,8 @@ class Publish extends React.Component {
               simDescription = this.state.simDescription,
               resourceUrl = this.state.resourceUrl,
               beforeValue = this.state.beforeValue,
-              forceValue = this.state.forceValue
+              forceValue = this.state.forceValue,
+              isUseOldDependency = this.state.isUseOldDependency
         const content = JSON.stringify({
                 partUserType,
                 appType,
@@ -73,23 +90,25 @@ class Publish extends React.Component {
                 simDescription,
                 resourceUrl,
                 beforeValue,
-                forceValue
+                forceValue,
+                isUseOldDependency
             })
+        this.setState({
+            isBundleLoading: true
+        })
         fetch('/api/bundle',{
             method: 'POST',
             credentials: "include",
             headers:{
-                "Content-Type": "application/json",
-                "Content-Length": content.length.toString()
+                "Content-Type": "application/json"
             },
             body: content
         }).then(res=>{
             if(res.ok){
+                console.log('res.ok');
                 this.state.resourceUrl = '';
                 this.state.description = '';
                 this.state.simDescription = '';
-                dispatch(fetchBundles())
-                browserHistory.push('/')
             } else {
                 this.setState({
                     isFailed: true
@@ -108,6 +127,11 @@ class Publish extends React.Component {
     onforceChange(e){
         this.setState({
             forceValue: e.target.value,
+        })
+    }
+    onisOldChange(e){
+        this.setState({
+            isUseOldDependency: e.target.value,
         })
     }
     handleDatas(data, func, statuType){
@@ -230,6 +254,14 @@ class Publish extends React.Component {
                                 </RadioGroup>
                             </FormItem>
                         </Col>
+                        <Col span={8}>
+                            <FormItem {...formItemLayout} label="是否利用上次依赖">
+                                <RadioGroup onChange={this.onisOldChange} value={this.state.isUseOldDependency}>
+                                    <Radio value={'是'}>是</Radio>
+                                    <Radio value={'否'}>否</Radio>
+                                </RadioGroup>
+                            </FormItem>
+                        </Col>
                     </Row>
                     <Row>
                         <Col>
@@ -240,6 +272,10 @@ class Publish extends React.Component {
                         </Col>
                     </Row>
                 </Form>
+                 { this.state.isBundleLoading ?
+                    <Spin size="large"  tip="Loading..." className="loadingBar"/> :
+                    null
+                }
             </div>
         )
     }

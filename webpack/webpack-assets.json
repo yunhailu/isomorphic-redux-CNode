@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/public/main.73aa18f6664d098690f3.js"
+    "main": "http://localhost:3001/public/main.be5332fe9516f83947eb.js"
   },
   "styles": {},
   "assets": {
@@ -56,7 +56,7 @@
       "_style": "body {\n  min-height: 100%;\n  font-size: 16px;\n}\nul,\nli {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"
     },
     "./common/components/Publish/Publish.less": {
-      "_style": ".btnDrop {\n  width: 40px;\n}\n"
+      "_style": ".btnDrop {\n  width: 40px;\n}\n.loadingBar {\n  z-index: 999999;\n  left: 50%;\n  top: 69%;\n  position: absolute;\n}\n"
     },
     "./common/components/Reg/Reg.less": {
       "_style": ".login {\n  text-align: center;\n}\n.login-input-first {\n  display: block;\n  width: 50%;\n  left: 26%;\n}\n.login-input-second {\n  display: block;\n  width: 50%;\n  left: 26%;\n}\n"

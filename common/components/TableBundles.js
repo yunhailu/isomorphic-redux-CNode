@@ -1,6 +1,10 @@
 import React, { PropTypes, Component } from 'react'
 import { Router, Route, Link, browserHistory } from 'react-router'
 import { Card,Row,Col,Rate,Icon,Pagination,Table, Button } from 'antd';
+import {postApi} from '../util/api';
+import io from 'socket.io-client'
+const socket = io('http://localhost:3000');
+
 export default class Bundles extends Component {
   constructor(props){
         super(props);
@@ -10,7 +14,11 @@ export default class Bundles extends Component {
           currentBundles: this.handlePosts(bundles).slice(0,15)
         };
         this.onChange = this.onChange.bind(this);
+        socket.on('bundleUpload',(data) => this.bundleUpload(data))
     }
+  bundleUpload(data){
+    console.log('bundleupload', data);
+  }
   onChange(page,total){
     const {bundles} = this.props;
     //console.log(bundles.length)
@@ -30,6 +38,20 @@ export default class Bundles extends Component {
   enterDetail(id){
     browserHistory.push(`/detail/${id}`);
   }
+  bundleCdn(resourceId, resourceUrl){
+    console.log('resourceId',resourceId);
+    console.log('resourceUrl',resourceUrl);
+    const content = JSON.stringify({
+                resourceId,
+                resourceUrl
+            })
+    postApi('bundleUpload', content)
+        .then(res=>{
+            if(res.ok){
+                console.log('res.ok');
+            }
+        })
+  }
   componentWillReceiveProps(props){
     const {bundles} = props;
     this.setState({
@@ -44,9 +66,13 @@ export default class Bundles extends Component {
         dataIndex: 'operate',
         render: (text, record, index) => {
           const id = this.state.currentBundles[index]['_id'];
+          const resourceId = this.state.currentBundles[index]['resourceId'];
+          const resourceUrl = this.state.currentBundles[index]['resourceUrl'];
           return (
             <span>
               <a onClick={() => this.enterDetail(id)}>操作</a>
+              <span className="ant-divider" />
+              <a onClick={() => this.bundleCdn(resourceId, resourceUrl)}>上线</a>
             </span>
           )
         },

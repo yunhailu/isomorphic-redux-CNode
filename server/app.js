@@ -17,7 +17,16 @@ import config from '../config';
 
 
 const app = new express();
-const port = 8080;
+const server = require('http').createServer(app);
+export const io = require('socket.io')(server);
+io.on('connection', (socket) => {
+  console.log('a user connected');
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+const port = 3000;
 const options = {
     origin: true,
     credentials: true
@@ -47,7 +56,7 @@ app.use(express.static(path.join(__dirname,'../dist')))
 app.all("*",(req,res,next)=>{
   res.header("Access-Control-Allow-Origin", "*");
   // res.setHeader( "Access-Control-Allow-Origin", req.headers.origin );
-  res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Content-Length, Authorization, Accept, X-Requested-With');
+  res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, Accept, X-Requested-With');
   res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
   console.log('okla');
   next();
@@ -59,7 +68,7 @@ app.use('*',(req,res,next)=>{
 })*/
 app.use('*',handleRender);
 
-app.listen(port,err=>{
+server.listen(port,err=>{
     if(err){
         console.error(err);
     } else {
