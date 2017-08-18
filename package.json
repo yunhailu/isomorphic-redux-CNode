@@ -1,5 +1,5 @@
 {
-  "name": "redux",
+  "name": "isomorphic-redux-CNode",
   "version": "1.0.0",
   "description": "react-ssr",
   "main": "webpack.config.js",
