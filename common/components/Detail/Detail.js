@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import {Button, Input, Form, Row, Col, Select} from 'antd'
 import {fetchBundles} from '../../actions/actions'
-import fetch from 'isomorphic-fetch'
+import { updateBundle } from '../../util/fetch';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -86,17 +86,10 @@ class Detail extends React.Component {
                 utilityType
             });
       console.log('content', content);
-      fetch('/api/updateBundle',{
-            method: 'PUT',
-            credentials: "include",
-            headers:{
-                "Content-Type": "application/json",
-                "Content-Length": content.length.toString()
-            },
-            body: content
-        }).then(res=>{
-            if(res.ok){
-                console.log('detail',res.json._id)
+      updateBundle({params: content}).then(data=>{
+            console.log('data', data);
+            if(data.ok){
+                console.log('detail',data.json)
                 dispatch(fetchBundles())
                 browserHistory.push('/')
             } else {

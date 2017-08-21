@@ -4,7 +4,6 @@ import { Router, Route, Link,browserHistory } from 'react-router'
 import {logOut, fetchUser} from '../actions/actions'
 import List from './List'
 import MyHeader from './Headers'
-import fetch from 'isomorphic-fetch'
 import {Button,Menu, Icon,Input, Layout} from 'antd'
 
 const { Header, Footer, Sider, Content } = Layout;

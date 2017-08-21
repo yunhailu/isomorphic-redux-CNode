@@ -7,7 +7,6 @@ import {RouterContext,match} from 'react-router';
 import {receiveBundles, receiveProperty, receiveUser} from '../common/actions/actions';
 import storeApp from '../common/configStore';
 import routesApp from '../common/routes';
-import fetch from 'isomorphic-fetch'
 import fs from 'fs';
 import path from 'path';
 import * as getInitDatas from './util/initialData';

@@ -79,18 +79,21 @@ function getMaxFile(filePath){
     let files = [];
     fs.readdirSync(filePath).forEach(file => {
         const intFile = parseInt(file, 10);
-        files.push(intFile)
+        // 剔除NaN
+        if (intFile === intFile){
+            files.push(intFile)
+        }
     })
+    console.log('files',files);
     let maxOne = files.reduce(function(a,b){
         return Math.max(a,b)
     });
     return maxOne;
 }
 
-function zipBundles(lists, bundleId, platForm){
+function zipBundles(lists, baseName, bundleId, platForm){
     lists.forEach(function(file, index){
-        console.log('zipBundle', zipBundle);
-        zipBundle(file, bundleId, platForm);
+        zipBundle(file, baseName, bundleId, platForm);
     })
 }
 
@@ -109,7 +112,9 @@ function buildPackage (bundle, isUseOldDependency){
         shell.mkdir('bundle_nodeModules');
         shell.cd('bundle_nodeModules');
         shell.mkdir(`${tempBundleId}`);
-        shell.cd('../');
+        shell.cd(`${tempBundleId}`);
+        shell.mkdir('node_modules');
+        shell.cd('../..');
     }else{
         console.log(2)
         shell.cd(`bundle_packages`);
@@ -122,18 +127,22 @@ function buildPackage (bundle, isUseOldDependency){
     shell.exec(`git clone ${url}`);
     shell.cd(baseName);
     if (isUseOldDependency){
-        console.log('isUseOldDependency', isUseOldDependency)
         const pathCon = isPathExist(config.baseDir, 'bundle_packages', 'bundle_nodeModules') && path.resolve(config.baseDir, 'bundle_packages', 'bundle_nodeModules')
         // copy last node_modules to contempotary directory.
         let lastBundleId = getMaxFile(pathCon);
+        console.log('lastBundleId',lastBundleId);
         const lastModulesDirectory = isPathExist(config.baseDir, 'bundle_packages', 'bundle_nodeModules', `${lastBundleId}`, 'node_modules') && path.resolve(config.baseDir, 'bundle_packages', 'bundle_nodeModules', `${lastBundleId}`, 'node_modules');
         console.log('lastModulesDirectory',lastModulesDirectory)
         lastModulesDirectory && shell.cp('-R', lastModulesDirectory, './')
     }else{
         console.log('isUseOldDependency false', isUseOldDependency)
-        const bundleModulesDirectory = path.resolve(config.baseDir, 'bundle_packages', 'bundle_nodeModules', `${tempBundleId}`);
+        // 创建放置node_modules的文件夹。
+        shell.cd('../../bundle_nodeModules');
+        shell.mkdir(`${tempBundleId}`);
+        shell.cd(`../${tempBundleId}/baseName`);
+        const bundleModulesDirectory = path.resolve(config.baseDir, 'bundle_packages', 'bundle_nodeModules', `${tempBundleId}`, 'node_modules');
         shell.exec('npm install')
-        shell.cp('-R', 'node_modules/',bundleModulesDirectory)
+        shell.cp('-R', './node_modules',bundleModulesDirectory)
     }
     shell.exec('sh bundleSplit.sh');
     const androidBundlepath = path.resolve(config.baseDir, 'bundle_packages', `${tempBundleId}`, baseName, 'output', 'android');
@@ -143,8 +152,8 @@ function buildPackage (bundle, isUseOldDependency){
     let iosFilterFiles = filteingFiles(null,getsyncFiles(iosBundlepath));
     console.log('androidFilterFiles',androidFilterFiles);
     console.log('iosFilterFiles',iosFilterFiles);
-    zipBundles(androidFilterFiles, tempBundleId, 'android');
-    zipBundles(iosFilterFiles, tempBundleId, 'ios');
+    zipBundles(androidFilterFiles, baseName, tempBundleId, 'android');
+    zipBundles(iosFilterFiles, baseName, tempBundleId, 'ios');
     return Promise.all([
         new Promise(function(resolve,reject){
             getFilesPromise(androidBundlepath,handleFiles,resolve,reject)
@@ -156,11 +165,11 @@ function buildPackage (bundle, isUseOldDependency){
 }
 
 export default function (req,res,next){
-    const body = req.body;
-    console.log('req.body.isUseOldDependency',req.body.isUseOldDependency);
-    const isUseOldDependency = (req.body.isUseOldDependency == "是")? true: false;
+    const body = JSON.parse(req.body.params);
+    console.log('req.body.isUseOldDependency',body.isUseOldDependency);
+    const isUseOldDependency = (body.isUseOldDependency == "是")? true: false;
     generateBundle(body).then((bundle) => {
-                          res.json({ok: true, message: "success"});
+                          res.json({ok: true, data: "success"});
                           return buildPackage(bundle, isUseOldDependency)
                         })
                         .then(([bundleAndr, bundleIos]) => {

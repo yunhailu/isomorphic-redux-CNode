@@ -55,7 +55,6 @@ app.use(express.static(path.join(__dirname,'../public')))
 app.use(express.static(path.join(__dirname,'../dist')))
 app.all("*",(req,res,next)=>{
   res.header("Access-Control-Allow-Origin", "*");
-  // res.setHeader( "Access-Control-Allow-Origin", req.headers.origin );
   res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, Accept, X-Requested-With');
   res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
   console.log('okla');

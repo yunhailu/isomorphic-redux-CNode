@@ -16,6 +16,7 @@ class bundleService {
     return this.Bundle.find(query)
   }
   findByIdUpdate(condition, updateInfo, isNew){
+    console.log('condition',condition);
     return this.Bundle.findByIdAndUpdate(condition, updateInfo, {new:isNew}).exec()
   }
 }

@@ -1,10 +1,11 @@
 import propertyService from '../service/property';
 
 export default function(req,res,next){
+    const jsonProperty = JSON.parse(req.body.params);
     const propertys = {
-        propertyvalue: req.body.propertyvalue,
-        propertytype: req.body.propertytype
-    }
+        propertyvalue: jsonProperty.propertyvalue,
+        propertytype: jsonProperty.propertytype
+    };
     propertyService.countProperty({
         type: propertys.propertytype,
         value: propertys.propertyvalue,
@@ -21,8 +22,7 @@ export default function(req,res,next){
         })
     })
     .then(doc => {
-        console.log(doc);
-        return res.json({ok: true, message: "success"});
+        return res.json({ok: true, data: "success"});
     })
     .catch(err => {
         return res.status(500).end(err);

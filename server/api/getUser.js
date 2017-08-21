@@ -7,7 +7,7 @@ export default function(req,res,next){
         userName
     })
     .then(function(userInfo){
-        return res.statue(200).json(userInfo);
+        return res.status(200).json({ok: true, json: userInfo});
     })
     .catch(function(err){
         if(err){

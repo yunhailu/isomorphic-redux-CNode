@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import fetch from 'isomorphic-fetch'
+import { postBundle } from '../../util/fetch';
 import {browserHistory} from 'react-router';
 import {Form, Row, Col,Input,Button,Menu,Dropdown,Radio,Select, Spin} from 'antd'
 import {fetchBundles, fetchPropertyList} from '../../actions/actions'
@@ -80,7 +80,7 @@ class Publish extends React.Component {
               beforeValue = this.state.beforeValue,
               forceValue = this.state.forceValue,
               isUseOldDependency = this.state.isUseOldDependency
-        const content = JSON.stringify({
+        const params = JSON.stringify({
                 partUserType,
                 appType,
                 baseType,
@@ -96,14 +96,7 @@ class Publish extends React.Component {
         this.setState({
             isBundleLoading: true
         })
-        fetch('/api/bundle',{
-            method: 'POST',
-            credentials: "include",
-            headers:{
-                "Content-Type": "application/json"
-            },
-            body: content
-        }).then(res=>{
+        postBundle({params: params}).then(res=>{
             if(res.ok){
                 console.log('res.ok');
                 this.state.resourceUrl = '';

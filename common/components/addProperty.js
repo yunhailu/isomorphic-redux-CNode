@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import fetch from 'isomorphic-fetch';
 import {browserHistory} from 'react-router';
 import {Tabs, Input, Button} from 'antd';
 import {fetchPropertyList} from '../actions/actions';
+import {postProperty} from '../util/fetch';
 const TabPane = Tabs.TabPane;
 
 class AddProperty extends React.Component {
@@ -16,19 +16,12 @@ class AddProperty extends React.Component {
     addPropertyType(propertytype){
         const {dispatch} = this.props
         const propertyvalue = this.state.propertyvalue;
-        const content = JSON.stringify({
+        const params = JSON.stringify({
                 propertytype,
                 propertyvalue
             })
-        fetch('/api/property',{
-            method: 'POST',
-            credentials: "include",
-            headers:{
-                "Content-Type": "application/json",
-                "Content-Length": content.length.toString()
-            },
-            body: content
-        }).then(res=>{
+        postProperty({params: params}).then(res=>{
+            console.log('res',res);
             if(res.ok){
                 this.state.propertyvalue = '';
                 dispatch(fetchPropertyList());

@@ -6,8 +6,9 @@ const path = require('path');
 
 export default function(req,res,next){
     console.log('logoutddd')
-    const resourceId = req.body.resourceId;
-    const resourceUrl = req.body.resourceUrl;
+    const jsonUpload = JSON.parse(req.body.params);
+    const resourceId = jsonUpload.resourceId;
+    const resourceUrl = jsonUpload.resourceUrl;
     const baseName = path.basename(`${resourceUrl}`, path.extname(resourceUrl));
     const androidBuildPath = isPathExist(config.baseDir, 'bundle_packages', `${resourceId}`, baseName, 'output', 'android') && path.resolve(config.baseDir, 'bundle_packages', `${resourceId}`, baseName, 'output', 'android');
     const iosBuildPath = isPathExist(config.baseDir, 'bundle_packages', `${resourceId}`, baseName, 'output', 'ios') && path.resolve(config.baseDir, 'bundle_packages', `${resourceId}`, baseName, 'output', 'ios');

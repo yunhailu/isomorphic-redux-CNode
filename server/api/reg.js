@@ -3,8 +3,9 @@ const NodeBsp = require('../util/node-bsp');
 const bsp = new NodeBsp();
 
 export default function(req,res,next){
-    let userName = req.body.name,
-        isRNAdmin = req.body.isRNAdmin;
+    const jsonReg = JSON.parse(req.body.params);
+    let userName = jsonReg.name,
+        isRNAdmin = jsonReg.isRNAdmin;
         
     userService.getUser({
         userName

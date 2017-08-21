@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch'
+import { getPropertyList, getBundleList, getUser } from '../util/fetch';
 export const ADD_USER = 'ADD_USER'
 export const LOG_OUT = 'LOG_OUT'
 export const REQUEST_PROPERTY = 'REQUEST_PROPERTY'
@@ -8,7 +8,7 @@ export const RECEIVE_BUNDLES = 'RECEIVE_BUNDLES'
 export const REQUEST_USER = 'REQUEST_USER'
 export const RECEIVE_USER = 'RECEIVE_USER'
 import config from '../../config'
-import {propertyList, getBundles, getUser} from '../util/api'
+// import {propertyList, getBundles, getUser} from '../util/api'
 
 function requestPropertyList(){
     return {
@@ -25,12 +25,11 @@ export function receiveProperty(json){
 export function fetchPropertyList(){
     return dispatch=>{
         dispatch(requestPropertyList())
-        return fetch(propertyList,{
-            method: 'GET',
-            credentials: "include"
-        }).then(response=>response.json()).then(json=>{
-            if (json.ok){
-                dispatch(receiveProperty(json.json))
+        return getPropertyList({params: {}}).then(data=>{
+            if (data.ok){
+                dispatch(receiveProperty(data.json))
+            }else{
+                console.log('获取属性列表失败')
             }
         })
     }
@@ -49,19 +48,13 @@ export function receiveUser(user){
 export function fetchUser() {
     return dispatch=>{
         dispatch(requestUser())
-        return fetch(getUser,{
-                method: 'GET',
-                credentials: "include"
-            })
-            .then(res => {
-                if(res.ok){
-                    return res.json()
-                }
+        return getUser({params: {}}).then(data=>{
+            if (data.ok){
+                dispatch(receiveUser(data.json))
+            }else{
                 console.log('获取用户失败')
-            })
-            .then(json=>{
-                dispatch(receiveUser(json))
-            })
+            }
+        })
     }
 }
 export function addUser(json){
@@ -91,14 +84,12 @@ export function receiveBundles(json){
 export function fetchBundles(){
     return dispatch=>{
         dispatch(requestBundles())
-        return fetch(getBundles,{
-                method: 'GET',
-                credentials: "include"
-            })
-            .then(response=>response.json())
-            .then(json=>{
-                if (json.ok){
-                    dispatch(receiveBundles(json.json))
+        return getBundleList({params: {}})
+            .then(data=>{
+                if (data.ok){
+                    dispatch(receiveBundles(data.json))
+                }else{
+                    console.log('获取bundle列表失败')
                 }
             })
     }

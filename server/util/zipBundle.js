@@ -1,9 +1,17 @@
-const config = require('../../config');
+import config from '../../config';
 const path = require('path');
 const fs = require('fs');
 const archiver = require('archiver');
-export default function zipBundle(fileName, resourceId, operate){
-    const outputPath = path.resolve(config.baseDir, 'bundle_packages', `${resourceId}`, 'bundleTimestamp', 'output', operate, `${fileName}.zip`);
+
+export default function zipBundle(fileName, baseName, resourceId, operate){
+    console.log('config.baseDir', config.baseDir);
+    console.log('resourceId', `${resourceId}`);
+    console.log('baseName', baseName);
+    console.log('operate', operate);
+    console.log('fileName', `${fileName}.zip`);
+    console.log('FirestoutputPath', fileName);
+    console.log('alltoutputPath', path.resolve(config.baseDir, 'bundle_packages', `${resourceId}`, baseName, 'output', operate, `${fileName}.zip`));
+    const outputPath = path.resolve(config.baseDir, 'bundle_packages', `${resourceId}`, baseName, 'output', operate, `${fileName}.zip`);
     console.log('outputPath',outputPath);
     const output = fs.createWriteStream(outputPath);
     const zipArchive = archiver('zip');
@@ -17,7 +25,7 @@ export default function zipBundle(fileName, resourceId, operate){
     const getStream = function(fileonly){
       return fs.readFileSync(fileonly);
     }
-    const pathOne = path.resolve(config.baseDir, 'bundle_packages', `${resourceId}`, 'bundleTimestamp', 'output', operate, fileName);
+    const pathOne = path.resolve(config.baseDir, 'bundle_packages', `${resourceId}`, baseName, 'output', operate, fileName);
     
     zipArchive.append(getStream(pathOne), { name: fileName});
 

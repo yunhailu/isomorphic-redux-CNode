@@ -1,7 +1,7 @@
 import React from 'react';
 import {browserHistory} from 'react-router';
 import {connect} from 'react-redux';
-import fetch from 'isomorphic-fetch'
+import { reg } from '../../util/fetch';
 import {addUser} from '../../actions/actions'
 import { Input, Button,Icon } from 'antd';
 require('./Reg.less');
@@ -20,20 +20,12 @@ class Reg extends React.Component{
         const {dispatch} = this.props;
         const name = this.state.name,
             isRNAdmin = this.state.isRNAdmin;
-        const content = JSON.stringify({
+        const params = JSON.stringify({
                 name,
                 isRNAdmin
             })
-        fetch('/api/reg',{
-            method: 'POST',
-            credentials: "include",
-            headers:{
-                "Content-Type": "application/json",
-                "Content-Length": content.length.toString()
-            },
-            body: content
-        })
-        .then(res => res.json())
+        reg({params: params})
+        .then(res => res.data)
         .then(json=>{
             console.log('json',json);
             if(json.ok){

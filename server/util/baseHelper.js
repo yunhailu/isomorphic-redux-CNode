@@ -3,11 +3,8 @@ const path = require('path');
 const fs = require('fs');
 
 export function isPathExist(...theArgs){
-    console.log(theArgs);
     let paths = "";
     paths = theArgs.reduce(function(sum,value){
-        console.log('sum',sum);
-        console.log('value',value);
         return path.resolve(sum, value)
     }, config.baseDir);
     return fs.existsSync(paths);

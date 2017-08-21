@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import { Router, Route, Link, browserHistory } from 'react-router'
 import { Card,Row,Col,Rate,Icon,Pagination,Table, Button } from 'antd';
-import {postApi} from '../util/api';
+import {bundleUpload} from '../util/fetch';
 import io from 'socket.io-client'
 const socket = io('http://localhost:3000');
 
@@ -41,11 +41,11 @@ export default class Bundles extends Component {
   bundleCdn(resourceId, resourceUrl){
     console.log('resourceId',resourceId);
     console.log('resourceUrl',resourceUrl);
-    const content = JSON.stringify({
+    const params = JSON.stringify({
                 resourceId,
                 resourceUrl
             })
-    postApi('bundleUpload', content)
+    bundleUpload({params: params})
         .then(res=>{
             if(res.ok){
                 console.log('res.ok');
@@ -102,15 +102,6 @@ export default class Bundles extends Component {
     };
     return (
       <div style={{ background: 'white', padding: '30px', minHeight:'600px', fontSize:'16px' }}>
-        {/* {this.state.currentBundles.map((post, i) =>
-          <Row  key={i} style={{borderBottom:'1px solid #EDEDED',height:'50px',lineHeight:'50px',overflow:'hidden'}}>
-            <Col span="2">{post.author}:</Col>
-            <Col span="2"><span style={{backgroundColor:'green',color:'white'}}>{post.type}</span></Col>
-            <Col span="12"><Link className="link" to={"/item/" + post.flag} >{post.title}</Link></Col>
-            <Col span="2"><span style={{color:'red'}}>{post.discussion.length}</span>条评论</Col>
-            <Col span="6"><span>{post.time.minute}</span></Col>
-          </Row>
-        )} */}
         <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.currentBundles} bordered/>
         <Pagination style={{marginTop:'5px'}} showQuickJumper defaultCurrent={1} total={bundles.length} defaultPageSize={15} onChange={this.onChange} />
       </div>
