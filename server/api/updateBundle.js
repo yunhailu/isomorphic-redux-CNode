@@ -1,5 +1,4 @@
-import Bundle from '../Models/bundle';
-const BundleEntity = new Bundle();
+import bundleService from '../service/bundle';
 
 export default function(req,res,next){
   const _id = req.body.id;
@@ -10,8 +9,7 @@ export default function(req,res,next){
     updateTime: new Date(),
     updatePerson: userName
   }
-  Bundle.findByIdAndUpdate(_id,{"$pushAll": {"updateInfo": [updateInfo]}, $set:req.body},{new:true})
-        .exec()
+  bundleService.findByIdUpdate(_id,{"$pushAll": {"updateInfo": [updateInfo]}, $set:req.body},true)
         .then(function(bundle){
           console.log('id',_id);
           return res.status(200).json({ok: true, json: bundle._id});

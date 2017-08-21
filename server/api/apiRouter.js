@@ -15,7 +15,7 @@ const router = Express.Router();
 router.post('/property', addProperty);
 router.get('/propertyList',getPropertyList);
 
-// bundles api
+// // bundles api
 router.post('/bundle', addBundle);
 router.get('/getBundles',getBundleList);
 router.put('/updateBundle',updateBundle);

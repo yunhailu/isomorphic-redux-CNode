@@ -1,4 +1,3 @@
-import User from '../Models/user';
 import userService from '../service/user';
 const NodeBsp = require('../util/node-bsp');
 const bsp = new NodeBsp();

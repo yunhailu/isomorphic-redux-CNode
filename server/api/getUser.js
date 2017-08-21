@@ -1,13 +1,11 @@
-import User from '../Models/user';
 import userService from '../service/user';
 
 export default function(req,res,next){
     const userName = req.session.user.userName;
-    console.log('userName',userName);    
-    User.findOne({
+    console.log('userName',userName);
+    userService.getUser({
         userName
     })
-    .exec()
     .then(function(userInfo){
         return res.statue(200).json(userInfo);
     })

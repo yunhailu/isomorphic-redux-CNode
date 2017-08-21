@@ -1,10 +1,9 @@
-import Bundle from '../Models/bundle';
+import bundleService from '../service/bundle';
 import config from '../../config';
 import {io} from '../app';
 import {isPathExist, getFilesPromise, getsyncFiles, filteingFiles} from '../util/baseHelper';
 import zipBundle from '../util/zipBundle';
 const shell = require('shelljs');
-const BundleEntity = new Bundle();
 const path = require('path');
 const fs = require('fs');
 const android = {},
@@ -42,10 +41,10 @@ function generateBundle(body){
         forceValue = body.forceValue,
         isUseOldDependency = body.isUseOldDependency;
 
-    return Bundle.count({
-        resourceUrl,
-        isDel: false
-    }).exec()
+    return bundleService.countBundle({
+          resourceUrl,
+          isDel: false
+      })
       .then(function(count){
         const date = new Date();
         const time = {
@@ -59,7 +58,7 @@ function generateBundle(body){
         // if(count){
         //     throw new Error('Bundle已经存在 ');
         // }
-        return Bundle.create({
+        return bundleService.createBundle({
             partUserType,
             appType,
             baseType,
@@ -171,7 +170,7 @@ export default function (req,res,next){
                                 android: bundleAndr
                             }
                             console.log('tempBundleId',tempBundleId);
-                            return Bundle.findOneAndUpdate({resourceId: tempBundleId}, {$set:{bundleName:bundleName}}, {new: true})
+                            return bundleService.findAndUpdate({resourceId: tempBundleId}, {$set:{bundleName:bundleName}}, true)
                         })
                         .then(function(doc){
                             console.log(doc,'doc');

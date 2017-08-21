@@ -1,22 +1,21 @@
-const jwt = require("jwt-simple");
-import Property from '../Models/property';
-const PropertyEntity = new Property();
+import propertyService from '../service/property';
+
 export default function(req,res,next){
     const propertys = {
         propertyvalue: req.body.propertyvalue,
         propertytype: req.body.propertytype
     }
-    Property.count({
+    propertyService.countProperty({
         type: propertys.propertytype,
         value: propertys.propertyvalue,
         isDel: false
-    }).exec()
+    })
     .then(function(count){
         if(count){
             console.log('existed');
             return res.json({ok: false, message: "数据已经存在"});
         }
-        return Property.create({
+        return propertyService.createProperty({
             type: propertys.propertytype,
             value: propertys.propertyvalue
         })

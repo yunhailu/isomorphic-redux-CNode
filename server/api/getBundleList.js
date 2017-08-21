@@ -1,8 +1,7 @@
-import Bundle from '../Models/bundle';
-const BundleEntity = new Bundle();
+import bundleService from '../service/bundle';
 
 module.exports = function (req,res,next){
-    Bundle.find({})
+    bundleService.findBundle({})
           .sort({createdTime: -1})
           .exec()
           .then(function(bundlesList){
